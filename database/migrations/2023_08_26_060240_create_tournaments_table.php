@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('banners', function (Blueprint $table) {
-            $table->id();
-            $table->text('caption');
-            $table->string('link');
+        Schema::create('tournaments', function (Blueprint $table) {
+            $table->id();  
+            $table->boolean('register');
+            $table->integer('number');
+            $table->string('title');
+            $table->text('description');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
+            $table->string('totalprize');
             $table->string('image');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('tournaments');
     }
 };
