@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tournament extends Model
+class Book_type extends Model
 {
     use HasFactory;
 
-    public function tournament_players()
+    public function chess_books()
     {
-        return $this->hasMany(Tournament_player::class);
+        return $this->hasMany(Chess_book::class);
     }
 }
