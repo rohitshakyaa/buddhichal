@@ -1,0 +1,66 @@
+@import "./form.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .text-input {
+    @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light;
+  }
+
+  .text-input-error {
+    @apply outline-red-500 border-red-500 focus:ring-red-500 focus:border-red-500 dark:border-red-500 dark:outline-red-500 dark:focus:ring-red-500 dark:focus:border-red-500
+  }
+
+  .form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+  }
+
+  .error-text {
+    @apply text-sm text-red-600 dark:text-red-500;
+  }
+
+  /* --- buttons --- */
+  .button {
+    @apply cursor-pointer focus:ring-4 focus:outline-none font-medium rounded text-sm px-5 py-2.5 text-center;
+  }
+
+  .button-default {
+    @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+  }
+
+  .button-green {
+    @apply text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
+  }
+
+  .button-red {
+    @apply text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 font-medium dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900;
+  }
+
+  .button-yellow {
+    @apply bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900;
+  }
+
+  .button-sm {
+    @apply px-3 py-2 text-xs;
+  }
+
+  .button-md {
+    @apply px-3 py-2 text-sm;
+  }
+
+  .button-base {
+    @apply px-5 py-2.5 text-sm;
+  }
+
+  .button-lg {
+    @apply px-5 py-3 text-base;
+  }
+
+  .button-xl {
+    @apply px-5 py-3.5 text-base;
+  }
+
+}

@@ -1,0 +1,104 @@
+:root {
+  --header-color: #374151;
+  --row-color: #1f2937;
+  --border-color: rgba(17, 24, 39);
+}
+
+.tabulator {
+  border-radius: 4px;
+}
+
+.tabulator-tableholder {
+  background-color: var(--row-color);
+}
+
+.tabulator-header {
+  border-bottom: none !important;
+}
+
+.tabulator-headers .tabulator-col-content {
+  background-color: var(--header-color) !important;
+  padding: 4px 8px !important;
+}
+
+.tabulator-header-contents {
+  background-color: var(--header-color) !important;
+}
+
+.tabulator-row {
+  background-color: var(--row-color) !important;
+}
+
+.tabulator-row:not(:last-child) {
+  border: none;
+}
+
+.tabulator-col-content {
+  border-right: 1px solid var(--border-color);
+}
+
+.tabulator-col {
+  border-right: none !important;
+}
+
+
+.tabulator-cell {
+  padding: 4px 8px !important;
+  border: none !important;
+}
+
+.tabulator-arrow {
+  border-width: 4px !important;
+  display: none;
+  border-top-color: #aaa !important;
+  border-bottom-color: #aaa !important;
+}
+
+.tabulator-sortable[aria-sort="ascending"] {
+  .tabulator-arrow {
+    display: block;
+    border-bottom-color: white !important;
+    border-top-color: white !important;
+  }
+}
+
+.tabulator-sortable[aria-sort="descending"] {
+  .tabulator-arrow {
+    display: block;
+    border-top-color: white !important;
+  }
+}
+
+.tabulator-header-filter input {
+  border-radius: 3px !important;
+  max-width: 150px !important;
+  outline: none;
+  width: 100%;
+  background-color: white !important;
+  color: black !important;
+  font-weight: 400 !important;
+  padding: 5px 8px !important;
+}
+
+.tabulator-col-content {
+  /* padding: 12px 8px !important; */
+  color: rgba(255, 255, 255, 0.81);
+  height: 100%;
+  font-weight: 600 !important;
+}
+
+.tabulator-headers>.tabulator-col:first-of-type .tabulator-col-content {
+  border-left: none !important;
+}
+
+.tabulator-headers>.tabulator-col:last-of-type .tabulator-col-content {
+  border-right: none !important;
+}
+
+.tabulator-col-sorter {
+  right: 0 !important;
+}
+
+.tabulator-header {
+  font-weight: normal !important;
+}
