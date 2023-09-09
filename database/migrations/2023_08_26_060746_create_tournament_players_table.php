@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->integer('fide_id');
             $table->timestamp('dob');
-            $table->text('file_reading');
+            $table->text('file_reading'); // this is fide rating
             $table->string('email')->unique();
             $table->timestamps();
         });

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NcaController;
+use App\Http\Controllers\TournamentController;
+use App\Models\Tournament;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/admin", [DashboardController::class, 'dashboardPage']);
+Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
+
+Route::get("/admin/login", [UserController::class, 'loginPage'])->name('login');
+Route::post("/admin/login", [UserController::class, 'login'])->name('login');
+Route::get("/admin/tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
+Route::get("/admin/tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
+Route::post("/admin/tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
+
+Route::get("/admin/ncas", [NcaController::class, 'index'])->name('ncaIndex');
+Route::get("/admin/ncas/create", [NcaController::class, 'create'])->name('ncaCreate');
+Route::post("/admin/ncas/store", [NcaController::class, 'store'])->name('ncaStore');
