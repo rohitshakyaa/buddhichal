@@ -1,46 +1,40 @@
-import { TabulatorFull as Tabulator } from "tabulator-tables";
+import { Table } from "./TableConfig";
 
-if (document.getElementById("nca-member-table")) {
-  let table = new Tabulator("#nca-member-table", {
-    ajaxURL: "/api/web/admin/ncas",
-    ajaxConfig: "GET",
-    layout: "fitColumns",
-    placeholder: "No data to view",
-    columns: [
-      {
-        title: "Position",
-        field: "position",
-        minWidth: 95,
-      },
-      {
-        title: "Name",
-        field: "name",
-        minWidth: 150,
-      },
-      {
-        title: "Phone Number",
-        field: "phone_number",
-        minWidth: 140,
-      },
-      {
-        title: "Post",
-        field: "post",
-        minWidth: 120,
-      },
-      {
-        title: "Email",
-        field: "email",
-        minWidth: 140,
-      },
-      {
-        title: "Image",
-        field: "image",
-        minWidth: 120,
-        formatter: ncaImageFormatter
-      }
-    ],
-  });
-}
+
+const columns = [
+  {
+    title: "Position",
+    field: "position",
+    width: 95,
+  },
+  {
+    title: "Name",
+    field: "name",
+    minWidth: 150,
+  },
+  {
+    title: "Phone Number",
+    field: "phone_number",
+    minWidth: 140,
+  },
+  {
+    title: "Post",
+    field: "post",
+    minWidth: 120,
+  },
+  {
+    title: "Email",
+    field: "email",
+    minWidth: 140,
+  },
+  {
+    title: "Image",
+    field: "image",
+    minWidth: 120,
+    formatter: ncaImageFormatter
+  }
+];
+let table1 = Table({ tableId: "nca-member-table", apiUrl: "/api/web/admin/ncas", columns })
 
 function ncaImageFormatter(cell) {
   if (cell.getValue()) {
