@@ -17,3 +17,15 @@ export function Table({ tableId, apiUrl, columns }) {
     return table;
   }
 }
+
+export function imageFormatter(cell) {
+  if (cell.getValue()) {
+    const imgTag = document.createElement('a');
+    imgTag.href = cell.getValue();
+    imgTag.target = "_blank";
+    imgTag.innerHTML = cell.getValue();
+    imgTag.setAttribute("class", "underline text-blue-500 hover:text-blue-600 visited:text-blue-400")
+    return imgTag;
+  }
+  return "";
+}
