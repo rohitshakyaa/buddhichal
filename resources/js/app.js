@@ -1,9 +1,10 @@
 import "./bootstrap";
 import "flowbite";
 
+import "tabulator-tables/dist/css/tabulator_midnight.min.css";
 import "./tabulators/TournamentTable.js";
 import "./tabulators/NcaMemberTable.js";
-import "tabulator-tables/dist/css/tabulator_midnight.min.css";
+import "./tabulators/TournamentPlayer.js";
 
 if (
     localStorage.getItem("color-theme") === "dark" ||

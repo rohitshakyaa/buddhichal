@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\NcaApiAdminController;
+use App\Http\Controllers\Api\TournamentPlayerApiController;
+use App\Http\Controllers\TournamentPlayerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +38,5 @@ Route::get("web/admin/tournaments", function () {
 });
 
 Route::get("web/admin/ncas", [NcaApiAdminController::class, 'index']);
+
+Route::get("web/admin/tournaments/players", [TournamentPlayerApiController::class, 'index']);
