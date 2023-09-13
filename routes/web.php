@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\BannerApiAdminController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
 use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\TournamentPlayerController;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Route;
 
@@ -19,11 +22,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get("/", function () {
+  return redirect(route('dashboard'));
 });
 
-Route::get('/book/{id}',[BookController::class,'getBookByType']);
+
+Route::get('/book/{id}', [BookController::class, 'getBookByType']);
+
 Route::get("/admin", [DashboardController::class, 'dashboardPage']);
 Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
@@ -36,3 +41,8 @@ Route::post("/admin/tournaments/store", [TournamentController::class, 'store'])-
 Route::get("/admin/ncas", [NcaController::class, 'index'])->name('ncaIndex');
 Route::get("/admin/ncas/create", [NcaController::class, 'create'])->name('ncaCreate');
 Route::post("/admin/ncas/store", [NcaController::class, 'store'])->name('ncaStore');
+
+Route::get("/admin/tournament/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
+Route::get("/admin/banners", [BannerController::class, 'index'])->name('bannerIndex');
+Route::get("/admin/banners/create", [BannerController::class, 'create'])->name('bannerCreate');
+Route::get("/admin/banners/store", [BannerController::class, 'store'])->name('bannerStore');
