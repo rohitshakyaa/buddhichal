@@ -6,7 +6,7 @@
     <h1 class="dark:text-white text-2xl font-bold">Create Banner</h1>
   </div>
   <section class="mt-5">
-    <form method="POST" action="{{ route('ncaStore') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('bannerStore') }}" enctype="multipart/form-data">
       @csrf
       <section class="form-grid-3 mb-4">
         <x-textbox id="caption" label="Caption" name="caption" error="{{ $errors->first('caption') }}" />
