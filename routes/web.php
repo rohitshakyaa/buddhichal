@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\BannerApiAdminController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
@@ -41,3 +43,6 @@ Route::get("/admin/ncas/create", [NcaController::class, 'create'])->name('ncaCre
 Route::post("/admin/ncas/store", [NcaController::class, 'store'])->name('ncaStore');
 
 Route::get("/admin/tournament/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
+Route::get("/admin/banners", [BannerController::class, 'index'])->name('bannerIndex');
+Route::get("/admin/banners/create", [BannerController::class, 'create'])->name('bannerCreate');
+Route::get("/admin/banners/store", [BannerController::class, 'store'])->name('bannerStore');
