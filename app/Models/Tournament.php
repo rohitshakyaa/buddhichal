@@ -13,4 +13,9 @@ class Tournament extends Model
     {
         return $this->hasMany(Tournament_player::class);
     }
+
+    public function tournament_images()
+    {
+        return $this->hasMany(Tournament_image::class);
+    }
 }
