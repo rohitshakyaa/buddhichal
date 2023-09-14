@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Menu;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MenuSeeder extends Seeder
 {
@@ -15,23 +16,42 @@ class MenuSeeder extends Seeder
     {
         $menuItems = [
             [
+                'id' => 1,
                 'title' => "Dashboard",
                 'icon' => "fa-solid fa-gauge-high",
                 'link' => "/admin/dashboard",
             ],
             [
+                'id' => 2,
                 'title' => "Tournaments",
                 'icon' => "fa-solid fa-chess-knight",
                 'link' => "/admin/tournaments",
             ],
             [
+                'id' => 3,
+                'title' => "Tournament Players",
+                'icon' => "fa-solid fa-chess-knight",
+                'link' => "/admin/tournaments/players",
+            ],
+            [
+                'id' => 4,
                 'title' => "NCA Members",
                 'icon' => "fa-solid fa-people-group",
                 'link' => "/admin/ncas",
             ],
+            [
+                'id' => 5,
+                'title' => "Banners",
+                'icon' => "fa-solid fa-people-group",
+                'link' => "/admin/banners",
+            ]
         ];
         foreach ($menuItems as $item) {
-            Menu::create($item);
+            if ($menu = Menu::find($item['id'])) {
+                $menu->update($item);
+            } else {
+                Menu::create($item);
+            }
         }
     }
 }
