@@ -47,3 +47,6 @@ Route::get("/admin/tournament/players", [TournamentPlayerController::class, 'ind
 Route::get("/admin/banners", [BannerController::class, 'index'])->name('bannerIndex');
 Route::get("/admin/banners/create", [BannerController::class, 'create'])->name('bannerCreate');
 Route::post("/admin/banners/store", [BannerController::class, 'store'])->name('bannerStore');
+Route::get("/admin/banners/{id}/edit", [BannerController::class, 'edit'])->name('bannerEdit');
+Route::post("/admin/banners/{id}/update", [BannerController::class, 'update'])->name('bannerUpdate');
+Route::post("/admin/banners/{id}/destroy", [BannerController::class, 'destroy'])->name('bannerDestroy');

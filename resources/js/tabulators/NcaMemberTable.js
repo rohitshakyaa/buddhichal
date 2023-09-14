@@ -31,12 +31,12 @@ const columns = [
     title: "Image",
     field: "image",
     minWidth: 120,
-    formatter: ncaImageFormatter
+    formatter: ncalinkFormatter
   }
 ];
 let table1 = Table({ tableId: "nca-member-table", apiUrl: "/api/web/admin/ncas", columns })
 
-function ncaImageFormatter(cell) {
+function ncalinkFormatter(cell) {
   if (cell.getValue()) {
     const imgTag = document.createElement('a');
     imgTag.href = cell.getValue();
