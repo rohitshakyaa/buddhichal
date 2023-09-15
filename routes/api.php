@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BannerApiAdminController;
+use App\Http\Controllers\Api\BannerApiController;
 use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\Api\TournamentApiAdminController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
@@ -33,3 +34,4 @@ Route::prefix('web/admin')->name('admin.')->group(function () {
     Route::post("tournament/create", [TournamentApiAdminController::class, '']);
     Route::get("banners", [BannerApiAdminController::class, 'index']);
 });
+

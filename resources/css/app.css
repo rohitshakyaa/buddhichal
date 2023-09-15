@@ -43,6 +43,10 @@
     @apply bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900;
   }
 
+  .button-xs {
+    @apply px-1.5 py-1 text-xs !font-normal;
+  }
+
   .button-sm {
     @apply px-3 py-2 text-xs;
   }

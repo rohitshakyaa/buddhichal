@@ -37,8 +37,8 @@ Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->n
 Route::get("/admin/login", [UserController::class, 'loginPage'])->name('login');
 Route::post("/admin/login", [UserController::class, 'login'])->name('login');
 
-Route::middleware(['auth'])->prefix('admin')->group(function(){
-  
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+
   Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
   Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
   Route::post("tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
@@ -52,8 +52,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function(){
   Route::get("banners", [BannerController::class, 'index'])->name('bannerIndex');
   Route::get("banners/create", [BannerController::class, 'create'])->name('bannerCreate');
   Route::post("banners/store", [BannerController::class, 'store'])->name('bannerStore');
-
+  Route::get("banners/{id}/edit", [BannerController::class, 'edit'])->name('bannerEdit');
+  Route::post("banners/{id}/update", [BannerController::class, 'update'])->name('bannerUpdate');
+  Route::post("banners/{id}/destroy", [BannerController::class, 'destroy'])->name('bannerDestroy');
 });
-
-
-
