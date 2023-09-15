@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BannerApiAdminController;
+use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
@@ -29,21 +30,30 @@ Route::get("/", function () {
 
 Route::get('/book/{id}', [BookController::class, 'getBookByType']);
 
+
 Route::get("/admin", [DashboardController::class, 'dashboardPage']);
 Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
 Route::get("/admin/login", [UserController::class, 'loginPage'])->name('login');
 Route::post("/admin/login", [UserController::class, 'login'])->name('login');
-Route::get("/admin/tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
-Route::get("/admin/tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
-Route::post("/admin/tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
 
-Route::get("/admin/ncas", [NcaController::class, 'index'])->name('ncaIndex');
-Route::get("/admin/ncas/create", [NcaController::class, 'create'])->name('ncaCreate');
-Route::post("/admin/ncas/store", [NcaController::class, 'store'])->name('ncaStore');
+Route::middleware(['auth'])->prefix('admin')->group(function(){
+  
+  Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
+  Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
+  Route::post("tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
 
-Route::get("/admin/tournament/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
+  Route::get("ncas", [NcaController::class, 'index'])->name('ncaIndex');
+  Route::get("ncas/create", [NcaController::class, 'create'])->name('ncaCreate');
+  Route::post("ncas/store", [NcaController::class, 'store'])->name('ncaStore');
 
-Route::get("/admin/banners", [BannerController::class, 'index'])->name('bannerIndex');
-Route::get("/admin/banners/create", [BannerController::class, 'create'])->name('bannerCreate');
-Route::post("/admin/banners/store", [BannerController::class, 'store'])->name('bannerStore');
+  Route::get("tournament/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
+
+  Route::get("banners", [BannerController::class, 'index'])->name('bannerIndex');
+  Route::get("banners/create", [BannerController::class, 'create'])->name('bannerCreate');
+  Route::post("banners/store", [BannerController::class, 'store'])->name('bannerStore');
+
+});
+
+
+

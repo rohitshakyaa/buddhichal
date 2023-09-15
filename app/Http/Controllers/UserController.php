@@ -16,12 +16,12 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        $admin = $request->validate([
             "email" => ['required'],
             "password" => ['required']
         ]);
         if ($request->get('email') == 'admin@gmail.com' && $request->get('password') == 'admin@123') {
-            Auth::login();
+            Auth::attempt($admin);
             return redirect("/admin");
         }
         return redirect("/register")->with('danger', "Incorrect password or login");

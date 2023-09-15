@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
+use App\Http\Controllers\Api\TournamentApiAdminController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
 use App\Http\Controllers\TournamentPlayerController;
+use App\Models\Tournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,11 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("web/admin/tournaments", function () {
-    
+
+Route::prefix('web/admin')->name('admin.')->group(function () {
+
+    Route::get("ncas", [NcaApiAdminController::class, 'index']);
+
+    Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
+    Route::post("tournament/create", [TournamentApiAdminController::class, '']);
+    Route::get("banners", [BannerApiAdminController::class, 'index']);
 });
-
-Route::get("web/admin/ncas", [NcaApiAdminController::class, 'index']);
-
-Route::get("web/admin/tournaments/players", [TournamentPlayerApiController::class, 'index']);
-Route::get("web/admin/banners", [BannerApiAdminController::class, 'index']);
