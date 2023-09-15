@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Textbox extends Component
+class FileInput extends Component
 {
     /**
      * Create a new component instance.
@@ -15,7 +15,6 @@ class Textbox extends Component
         public string $id,
         public string $name,
         public string $label,
-        public string $value = "",
         public string $error = "",
         public string $placeholder = "",
         public string $type = "text",
@@ -28,6 +27,6 @@ class Textbox extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.textbox');
+        return view('components.file-input');
     }
 }

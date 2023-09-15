@@ -3,24 +3,25 @@
     <a href="{{ route('bannerIndex') }}" title="Go Back">
       <i class="dark:text-white fa-solid fa-arrow-left-long fa-xl"></i>
     </a>
-    <h1 class="dark:text-white text-2xl font-bold">Create Banner</h1>
+    <h1 class="dark:text-white text-2xl font-bold">Edit Banner</h1>
   </div>
   <section class="mt-5">
-    <form method="POST" action="{{ route('bannerStore') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('bannerUpdate', ['id' => $banner->id]) }}" enctype="multipart/form-data">
       @csrf
       <section class="form-grid-3 mb-4">
-        <x-textbox id="caption" label="Caption" name="caption" value="{{ old('caption') }}" error="{{ $errors->first('caption') }}" />
-        <x-textbox id="link" label="Link" name="link" value="{{ old('link') }}" error="{{ $errors->first('link') }}" />
+        <x-textbox id="caption" label="Caption" name="caption" value="{{ old('caption', $banner->caption) }}" error="{{ $errors->first('caption') }}" />
+        <x-textbox id="link" label="Link" name="link" value="{{ old('link', $banner->link) }}" error="{{ $errors->first('link') }}" />
+
         <x-file-input id="image" label="Image" name="image" error="{{ $errors->first('image') }}" />
       </section>
-      <div id="imageDiv" class="mb-4 hidden">
+      <div id="imageDiv" class="mb-4">
         <label class="form-label">Preview Image: </label>
         <div id="" class="w-64">
-          <img id="preview-img" src="" alt="">
+          <img id="preview-img" src="{{ $banner->image }}" class="text-white text-sm" alt="Preview Image">
         </div>
       </div>
       <button type="submit" class="button button-default">
-        Create
+        Update
       </button>
     </form>
   </section>
