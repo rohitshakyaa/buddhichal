@@ -27,11 +27,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::prefix('web/admin')->name('admin.')->group(function () {
-
     Route::get("ncas", [NcaApiAdminController::class, 'index']);
+
+    Route::get("tournaments", [TournamentApiAdminController::class, 'index']);
 
     Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
     Route::post("tournament/create", [TournamentApiAdminController::class, '']);
     Route::get("banners", [BannerApiAdminController::class, 'index']);
 });
-

@@ -14,13 +14,6 @@ class BookController extends Controller
      */
     public function getBookByType($id)
     {
-        $book = Book_type::findOrFail($id);
-        if($book)
-        {
-            $book = Chess_book::whereHas('book_type', function($query) use($id){
-                $query->where('id', $id);
-            })->get(); 
-        }
+        //
     }
-   
 }

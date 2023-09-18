@@ -68,41 +68,38 @@ class TournamentController extends Controller
 
                 $tournamentImage = TournamentImage::create([
                     'tournament_id' => $tournament->id,
-                    'image_name' => $imagePath . '/' . $imageName
+                    'image_path' => $imagePath . '/' . $imageName
                 ]);
             }
-
             DB::commit();
-
-            return redirect(route('tournaments'));
+            return redirect(route('tournamentIndex'));
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);
-            return ApiResponseHelper::errorResponse('Error creating tournament and image');
+            return back()
+                ->withInput($request->input())
+                ->with('danger', "Something went wrong");
         }
     }
 
 
-
-
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        try {
+            $tournament = Tournament::findOrFail($id);
+            $tournamentImages = TournamentImage::where('tournament_id', $tournament->id)->get();
+            return view('pages.tournament.edit', compact('tournament', 'tournamentImages'));
+        } catch (\Exception $e) {
+            Log::error($e);
+            return back()->with('danger', 'Tournament not found.');
+        }
     }
 
     /**
@@ -110,7 +107,51 @@ class TournamentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $tournament = Tournament::findOrFail($id);
+        if ($tournament) {
+            $request->validate([
+                'register' => 'required',
+                'number' => 'required',
+                'title' => 'required|min:2',
+                // 'description' => 'required',
+                'start_date' => 'required',
+                'end_date' => 'required',
+                'total_prize' => 'required',
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif'
+            ]);
+            DB::beginTransaction();
+            try {
+                Log::info("paramenter for storing tournament", $request->all());
+                $tournament->register = $request->register;
+                $tournament->number = $request->number;
+                $tournament->title = $request->title;
+                $tournament->description = "I am Rohit.";
+                $tournament->start_date = $request->start_date;
+                $tournament->end_date = $request->end_date;
+                $tournament->total_prize = $request->total_prize;
+                $tournament->save();
+
+                $images = [];
+                foreach ($request->file('images') as $image) {
+                    $imagePath = "images/tournaments";
+                    $path = public_path($imagePath);
+                    $imageName = $tournament->id . '-' . now()->format('YmdHis') . '.' . $image->extension();
+                    $image->move($path, $imageName);
+                    $tournamentId = $tournament->id;
+                    DB::table('tournament_images')
+                        ->where('tournament_id', $tournamentId)
+                        ->update(['image_path' => $imagePath . '/' . $imageName]);
+                }
+                DB::commit();
+                return redirect(route('tournamentIndex'))->with('success','torunament updated successfully');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error($e);
+                return back()
+                    ->withInput($request->input())
+                    ->with('danger', "Something went wrong");
+            }
+        }
     }
 
     /**
@@ -118,6 +159,20 @@ class TournamentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $tournament = Tournament::findOrFail($id);
+            $tournament->delete();
+            DB::table('tournament_images')
+                ->where('tournament_id', $id)
+                ->delete();
+
+            DB::commit();
+            return redirect(route('tournamentIndex'))->with('success', 'Tournament and its images have been deleted.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            return back()->with('danger', 'Something went wrong while deleting the tournament and images.');
+        }
     }
 }

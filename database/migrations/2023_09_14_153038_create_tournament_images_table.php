@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('tournament_id');
             $table->foreign('tournament_id')->references('id')->on('tournaments')->onDelete('cascade');
-            $table->string('image_name');
+            $table->string('image_path');
             $table->timestamps();
         });
     }

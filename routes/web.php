@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
@@ -55,4 +56,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("banners/{id}/edit", [BannerController::class, 'edit'])->name('bannerEdit');
   Route::post("banners/{id}/update", [BannerController::class, 'update'])->name('bannerUpdate');
   Route::post("banners/{id}/destroy", [BannerController::class, 'destroy'])->name('bannerDestroy');
+
+  Route::get("champions",[ChampionController::class, 'index'])->name('championIndex');
+  Route::get("champions/create",[ChampionController::class, 'create'])->name('championCreate');
+  Route::post("champions/store",[ChampionController::class, 'store'])->name('championStore');
 });

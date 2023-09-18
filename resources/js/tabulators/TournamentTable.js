@@ -2,7 +2,7 @@ import { Table } from "./TableConfig";
 
 
 const table1 = Table({
-  tableId: "tournament-table", apiUrl: "/api/web/admin/ncas", columns: [
+tableId: "tournament-table", apiUrl: "/api/web/admin/tournaments", columns: [
     {
       title: "Title",
       field: "title",

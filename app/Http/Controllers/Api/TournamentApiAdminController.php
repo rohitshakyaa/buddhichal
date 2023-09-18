@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponseHelper;
 use App\Models\Tournament;
-use App\Models\TournamentImage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TournamentApiAdminController extends Controller
 {
     public function index()
     {
+        $tournaments = Tournament::with('tournament_images')
+            ->select("register", "number", "title", "description", "start_date", "end_date", "total_prize")
+            ->get();
+        return ApiResponseHelper::successResponseWithData($tournaments);
     }
 }
