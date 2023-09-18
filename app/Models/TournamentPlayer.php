@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TournamentPlayer extends Model
 {
     use HasFactory;
+    protected $table = 'tournament_players';
 
     public function tournament()
     {

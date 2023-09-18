@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\BannerApiController;
+use App\Http\Controllers\Api\ChampionApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\Api\TournamentApiAdminController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
@@ -27,11 +28,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::prefix('web/admin')->name('admin.')->group(function () {
+    Route::get("banners", [BannerApiAdminController::class, 'index']);
+    
     Route::get("ncas", [NcaApiAdminController::class, 'index']);
 
     Route::get("tournaments", [TournamentApiAdminController::class, 'index']);
 
+    Route::get("champions", [ChampionApiAdminController::class, 'index']);
+
     Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
-    Route::post("tournament/create", [TournamentApiAdminController::class, '']);
-    Route::get("banners", [BannerApiAdminController::class, 'index']);
+    Route::post("tournament/create", [TournamentApiAdminController::class, 'create']);
 });
