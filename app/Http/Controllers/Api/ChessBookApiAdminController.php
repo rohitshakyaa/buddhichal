@@ -14,6 +14,9 @@ class ChessBookApiAdminController extends Controller
         $chessBooks = ChessBook::where('type', $type)
             ->select('image', 'name', 'type', 'file_path')
             ->get();
+        foreach ($chessBooks as $chessBook) {
+            $chessBook->file_path = url($chessBook->file_path);
+        }
         return ApiResponseHelper::successResponseWithData($chessBooks);
     }
 }

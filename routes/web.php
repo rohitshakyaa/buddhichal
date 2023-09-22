@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
+use App\Models\ChessBook;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Route;
 
@@ -57,15 +58,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::post("banners/{id}/update", [BannerController::class, 'update'])->name('bannerUpdate');
   Route::post("banners/{id}/destroy", [BannerController::class, 'destroy'])->name('bannerDestroy');
 
-  Route::get("champions",[ChampionController::class, 'index'])->name('championIndex');
-  Route::get("champions/create",[ChampionController::class, 'create'])->name('championCreate');
-  Route::post("champions/store",[ChampionController::class, 'store'])->name('championStore');
+  Route::get("champions", [ChampionController::class, 'index'])->name('championIndex');
+  Route::get("champions/create", [ChampionController::class, 'create'])->name('championCreate');
+  Route::post("champions/store", [ChampionController::class, 'store'])->name('championStore');
 
-  Route::get("chess-books/{type}",[BookController::class, 'index'])->name('chessBookIndex');
-  Route::get("chess-books/create",[BookController::class, 'create'])->name('chessBookCreate');
-  Route::post("chess-books/store",[BookController::class, 'store'])->name('chessBookStore');
-  Route::get("chess-books/{id}/edit/",[BookController::class, 'edit'])->name('chessBookEdit');
-  Route::post("chess-books/{id}/update",[BookController::class, 'update'])->name('chessBookUpdate');
-  Route::post("chess-books/{id}/destroy",[BookController::class, 'destroy'])->name('chessBookDestroy');
+  Route::get("chess-books/{type}", [BookController::class, 'index'])->name('chessBookIndex');
+
+  Route::get("chess-books/create", [BookController::class, 'create'])->name('chessBookCreate');
+  Route::post("chess-books/store", [BookController::class, 'store'])->name('chessBookStore');
+  Route::get("chess-books/{id}/edit/", [BookController::class, 'edit'])->name('chessBookEdit');
+  Route::post("chess-books/{id}/update", [BookController::class, 'update'])->name('chessBookUpdate');
+  Route::post("chess-books/{id}/destroy", [BookController::class, 'destroy'])->name('chessBookDestroy');
 });
-
