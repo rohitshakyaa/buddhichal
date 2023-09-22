@@ -60,4 +60,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("champions",[ChampionController::class, 'index'])->name('championIndex');
   Route::get("champions/create",[ChampionController::class, 'create'])->name('championCreate');
   Route::post("champions/store",[ChampionController::class, 'store'])->name('championStore');
+
+  Route::get("chess-books/{type}",[BookController::class, 'index'])->name('chessBookIndex');
+  Route::get("chess-books/create",[BookController::class, 'create'])->name('chessBookCreate');
+  Route::post("chess-books/store",[BookController::class, 'store'])->name('chessBookStore');
+  Route::get("chess-books/{id}/edit/",[BookController::class, 'edit'])->name('chessBookEdit');
+  Route::post("chess-books/{id}/update",[BookController::class, 'update'])->name('chessBookUpdate');
+  Route::post("chess-books/{id}/destroy",[BookController::class, 'destroy'])->name('chessBookDestroy');
 });
+

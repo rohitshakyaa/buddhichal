@@ -10,9 +10,12 @@ class TournamentApiAdminController extends Controller
 {
     public function index()
     {
-        $tournaments = Tournament::with('tournament_images')
+        $tournaments = Tournament::with(['tournament_images' => function ($query) {
+            $query->select('tournament_id', 'image_path');
+        }])
             ->select("register", "number", "title", "description", "start_date", "end_date", "total_prize")
             ->get();
+
         return ApiResponseHelper::successResponseWithData($tournaments);
     }
 }
