@@ -41,9 +41,11 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
+            Log::info("Data saved for banner with values: ", $validatedData);
             $champion = Champion::create($validatedData);
             $champion->image = $this->storeChampionImage($champion->id, $request->file('image'));
             $champion->save();
+            Log::info("Data saved for banner with values: ", $champion->toArray());
             DB::commit();
             return redirect(route('championIndex'))->with('success', 'champion added successfully');
         } catch (\Exception $e) {

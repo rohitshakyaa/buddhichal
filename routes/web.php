@@ -12,6 +12,7 @@ use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
 use App\Models\ChessBook;
 use App\Models\Tournament;
+use App\Models\TournamentPlayer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,4 +70,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("chess-books/{id}/edit/", [BookController::class, 'edit'])->name('chessBookEdit');
   Route::post("chess-books/{id}/update", [BookController::class, 'update'])->name('chessBookUpdate');
   Route::post("chess-books/{id}/destroy", [BookController::class, 'destroy'])->name('chessBookDestroy');
+
+  Route::get("toournaments/players", [TournamentPlayer::class, 'index'])->name('playerIndex');
+  Route::get("toournaments/players/create", [TournamentPlayer::class, 'create'])->name('playerCreate');
+  Route::post("toournaments/players/{id}/store", [TournamentPlayer::class, 'store'])->name('playerStore');
+  Route::get("toournaments/players/{id}/edit", [TournamentPlayer::class, 'edit'])->name('playerEdit');
+  Route::post("toournaments/players/{id}/{tournamentId}/update", [TournamentPlayer::class, 'update'])->name('playerUpdate');
+  Route::post("toournaments/players/{id}/destroy", [TournamentPlayer::class, 'destroy'])->name('playerDestroy');
 });
