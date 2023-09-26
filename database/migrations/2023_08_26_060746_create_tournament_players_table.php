@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('tournament_players', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tournament_id');
+            $table->unsignedBigInteger('tournament_id');
+            $table->foreign('tournament_id')->references('id')->on('tournaments')->onDelete('cascade');
             $table->string('name');
             $table->string('phone_number');
             $table->string('address');

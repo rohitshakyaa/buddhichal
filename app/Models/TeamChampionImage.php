@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Book_type extends Model
+class TeamChampionImage extends Model
 {
     use HasFactory;
+    protected $guarded = [''];
 
-    public function chess_books()
+    public function team_champion()
     {
-        return $this->hasMany(Chess_book::class);
+        return $this->belongsTo(TeamChampion::class);
     }
 }

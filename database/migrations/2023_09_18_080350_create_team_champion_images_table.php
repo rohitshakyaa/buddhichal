@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('book_types', function (Blueprint $table) {
+        Schema::create('team_champion_images', function (Blueprint $table) {
             $table->id();
-            $table->enum('book_type',['Openings','Middle games','Endgames','Basics','Intermidiate','Advance'])->default('Openings');
+            $table->unsignedBigInteger('team_champion_id');
+            $table->foreign('team_champion_id')->references('id')->on('team_champions')->onDelete('cascade');
+            $table->string('image_path');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('book_types');
+        Schema::dropIfExists('team_champion_images');
     }
 };

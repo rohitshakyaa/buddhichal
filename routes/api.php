@@ -2,9 +2,14 @@
 
 use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\BannerApiController;
+use App\Http\Controllers\Api\ChampionApiAdminController;
+use App\Http\Controllers\Api\ChessBookApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
+use App\Http\Controllers\Api\TeamChampionApiAdminController;
+use App\Http\Controllers\Api\TournamentApiAdminController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
 use App\Http\Controllers\TournamentPlayerController;
+use App\Models\Tournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,25 +28,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("web/admin/tournaments", function () {
-    $tournaments = [
-        (object) [
-            'title' => "Tournament 1",
-            'number' => "980123123",
-            'location' => "Khokana",
-            "start_date" => "2021-01-21",
-            "end_date" => "2022-02-02",
-            "total_prize" => "Rs. 4000",
-            "description" => "Testtest",
-            "register" => false,
-        ]
-    ];
-    return response()->json($tournaments);
+
+Route::prefix('web/admin')->name('admin.')->group(function () {
+    Route::get("banners", [BannerApiAdminController::class, 'index']);
+
+    Route::get("ncas", [NcaApiAdminController::class, 'index']);
+
+    Route::get("tournaments", [TournamentApiAdminController::class, 'index']);
+
+    Route::get("champions", [ChampionApiAdminController::class, 'index']);
+    Route::get("teamChampions", [TeamChampionApiAdminController::class, 'index']);
+
+    Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
+    Route::get("tournaments/players/create", [TournamentPlayerApiController::class, 'create']);
+    Route::post("tournaments/players/{id}/store", [TournamentPlayerApiController::class, 'store']);
+
+    Route::get("chess-books/{type}", [ChessBookApiAdminController::class, 'index']);
+
 });
-
-Route::get("web/admin/ncas", [NcaApiAdminController::class, 'index']);
-
-Route::get("web/admin/tournaments/players", [TournamentPlayerApiController::class, 'index']);
-Route::get("web/admin/banners", [BannerApiAdminController::class, 'index']);
-
-Route::get("/banners", [BannerApiController::class, 'index']);

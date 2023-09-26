@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('chess_books', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_type_id');
             $table->string('image');
             $table->string('name');
+            $table->enum('type',['Openings','Middle games','Endgames','Basics','Intermidiate','Advance']);
+            $table->string('file_path');
             $table->timestamps();
         });
     }

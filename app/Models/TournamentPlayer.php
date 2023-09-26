@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tournament_player extends Model
+class TournamentPlayer extends Model
 {
     use HasFactory;
+    protected $table = 'tournament_players';
 
     public function tournament()
     {

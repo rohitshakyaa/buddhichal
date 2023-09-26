@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nca;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use PgSql\Lob;
+use Throwable;
 
 class NcaController extends Controller
 {
@@ -27,7 +32,40 @@ class NcaController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect(route('ncaIndex'));
+        request()->validate([
+            'post' => 'required',
+            'position' => 'required',
+            'name' => 'required',
+            'phone_number' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required|email'
+        ]);
+
+
+        DB::beginTransaction();
+        try {
+            Log::info("Parameters from creating ncas", $request->all());
+            $nca = new Nca;
+            $nca->post = $request->post;
+            $nca->position = $request->position;
+            $nca->name = $request->name;
+            $nca->phone_number = $request->phone_number;
+            $nca->email = $request->email;
+            $nca->image = " ";
+            $nca->save();
+            $nca->image = $this->storeNcaImage($nca->id, $request->image);
+            $nca->push();
+            Log::info("Data saved for ncas with values: ", $nca->toArray());
+
+            DB::commit();
+            return redirect(route('ncaIndex'))->with('nca has been created');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e);
+            return back()
+                ->withInput($request->input())
+                ->with('danger', "Something went wrong");
+        }
     }
 
     /**
@@ -60,5 +98,14 @@ class NcaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function storeNcaImage($ncaId, $imageFile)
+    {
+        $imagePath = "images/ncas";
+        $path = public_path($imagePath);
+        $imageName = $ncaId . '-' . time() . '.' . $imageFile->extension();
+        $imageFile->move($path, $imageName);
+        return $imagePath . '/' . $imageName;
     }
 }
