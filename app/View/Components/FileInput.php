@@ -18,6 +18,7 @@ class FileInput extends Component
         public string $error = "",
         public string $placeholder = "",
         public string $type = "text",
+        public string $accept = "",
     ) {
         //
     }

@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
-use App\Models\ChessBook;
+use App\Models\book;
 use App\Models\Tournament;
 use App\Models\TournamentPlayer;
 use Illuminate\Support\Facades\Route;
@@ -66,13 +66,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::post("champions/{id}/update", [ChampionController::class, 'update'])->name('championUpdate');
   Route::post("champions/{id}/destroy", [ChampionController::class, 'destroy'])->name('championDestroy');
 
-  Route::get("books", [BookController::class, 'index'])->name('chessBookIndex');
-
-  Route::get("chess-books/create", [BookController::class, 'create'])->name('chessBookCreate');
-  Route::post("chess-books/store", [BookController::class, 'store'])->name('chessBookStore');
-  Route::get("chess-books/{id}/edit/", [BookController::class, 'edit'])->name('chessBookEdit');
-  Route::post("chess-books/{id}/update", [BookController::class, 'update'])->name('chessBookUpdate');
-  Route::post("chess-books/{id}/destroy", [BookController::class, 'destroy'])->name('chessBookDestroy');
+  Route::get("books", [BookController::class, 'index'])->name('bookIndex');
+  Route::get("books/create", [BookController::class, 'create'])->name('bookCreate');
+  Route::post("books/store", [BookController::class, 'store'])->name('bookStore');
+  Route::get("books/{id}/edit/", [BookController::class, 'edit'])->name('bookEdit');
+  Route::post("books/{id}/update", [BookController::class, 'update'])->name('bookUpdate');
+  Route::post("books/{id}/destroy", [BookController::class, 'destroy'])->name('bookDestroy');
 
   Route::get("tournaments/players", [TournamentPlayer::class, 'index'])->name('playerIndex');
   Route::get("tournaments/players/create", [TournamentPlayer::class, 'create'])->name('playerCreate');
