@@ -43,6 +43,6 @@ Route::prefix('web/admin')->name('admin.')->group(function () {
     Route::get("tournaments/players/create", [TournamentPlayerApiController::class, 'create']);
     Route::post("tournaments/players/{id}/store", [TournamentPlayerApiController::class, 'store']);
 
-    Route::get("chess-books/{type}", [ChessBookApiAdminController::class, 'index']);
+    Route::get("books", [ChessBookApiAdminController::class, 'index']);
 
 });

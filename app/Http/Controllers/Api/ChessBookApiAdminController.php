@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 
 class ChessBookApiAdminController extends Controller
 {
-    public function index(string $type)
+    public function index()
     {
-        $chessBooks = ChessBook::where('type', $type)
-            ->select('image', 'name', 'type', 'file_path')
+        $chessBooks = ChessBook::select('id', 'image', 'name', 'type', 'file_path')
             ->get();
         foreach ($chessBooks as $chessBook) {
             $chessBook->file_path = url($chessBook->file_path);
