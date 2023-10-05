@@ -42,9 +42,33 @@ class MenuSeeder extends Seeder
             [
                 'id' => 5,
                 'title' => "Banners",
-                'icon' => "fa-solid fa-people-group",
+                'icon' => "fa-solid fa-flag",
                 'link' => "/admin/banners",
-            ]
+            ],
+            [
+                'id' => 6,
+                'title' => "Champions",
+                'icon' => "fa-solid fa-trophy",
+                'link' => "/admin/champions",
+            ],
+            [
+                'id' => 7,
+                'title' => "Team Champions",
+                'icon' => "fa-solid fa-shield",
+                'link' => "/admin/team-champions",
+            ],
+            [
+                'id' => 8,
+                'title' => "Books",
+                'icon' => "fa-solid fa-book",
+                'link' => "/admin/books",
+            ],
+            [
+                'id' => 9,
+                'title' => "Products",
+                'icon' => "fa-solid fa-chess-board",
+                'link' => "/admin/products",
+            ],
         ];
         foreach ($menuItems as $item) {
             if ($menu = Menu::find($item['id'])) {

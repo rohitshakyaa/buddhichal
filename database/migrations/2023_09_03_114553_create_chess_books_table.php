@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Helpers\Constant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('image');
             $table->string('name');
-            $table->enum('type',['Openings','Middle games','Endgames','Basics','Intermidiate','Advance']);
-            $table->string('file_path');
+            $table->enum('type', Constant::$bookTypes);
+            $table->string('book_file');
             $table->timestamps();
         });
     }

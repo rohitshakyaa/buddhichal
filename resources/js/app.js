@@ -7,6 +7,7 @@ import "./tabulators/NcaMemberTable.js";
 import "./tabulators/TournamentPlayer.js";
 import "./tabulators/BannerTable";
 import "./tabulators/BookTable";
+import "./tabulators/ChampionTable";
 
 if (
     localStorage.getItem("color-theme") === "dark" ||

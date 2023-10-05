@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('champions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('from');
-            $table->string('game_at');
-            $table->enum('gender',['M','F']);
+            $table->string('from_address');
+            $table->string('game_at_address');
+            $table->enum('gender', ['M', 'F']);
             $table->string('image');
-            $table->timestamp('date');
+            $table->string("year");
             $table->timestamps();
         });
     }

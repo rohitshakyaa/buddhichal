@@ -1,7 +1,7 @@
 import { Table, actionComponent, linkFormatter } from "./TableConfig";
 
 const table1 = Table({
-    tableId: "book-table",
+    tableId: "chess-book-table",
     apiUrl: "/api/web/admin/books",
     columns: [
         {
@@ -13,24 +13,24 @@ const table1 = Table({
         {
             title: "Name",
             field: "name",
-            minWidth: 200,
+            minWidth: 120,
         },
         {
             title: "Type",
             field: "type",
-            minWidth: 150,
+            minWidth: 120,
         },
         {
-            title: "File Path",
-            field: "file_path",
-            minWidth: 150,
+            title: "Book File",
+            field: "book_file",
+            minWidth: 300,
             formatter: linkFormatter,
 
         },
         {
             title: "Image",
             field: "image",
-            minWidth: 120,
+            minWidth: 300,
             formatter: linkFormatter,
         },
     ],

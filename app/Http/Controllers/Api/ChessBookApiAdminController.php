@@ -11,10 +11,10 @@ class ChessBookApiAdminController extends Controller
 {
     public function index()
     {
-        $chessBooks = ChessBook::select('id', 'image', 'name', 'type', 'file_path')
-            ->get();
+        $chessBooks = ChessBook::all();
         foreach ($chessBooks as $chessBook) {
-            $chessBook->file_path = url($chessBook->file_path);
+            $chessBook->image = url($chessBook->image);
+            $chessBook->book_file = url($chessBook->book_file);
         }
         return ApiResponseHelper::successResponseWithData($chessBooks);
     }
