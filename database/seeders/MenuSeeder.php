@@ -44,7 +44,19 @@ class MenuSeeder extends Seeder
                 'title' => "Banners",
                 'icon' => "fa-solid fa-people-group",
                 'link' => "/admin/banners",
-            ]
+            ],
+            [
+                'id' => 6,
+                'title' => "Champions",
+                'icon' => "fa-solid fa-people-group",
+                'link' => "/admin/champions",
+            ],
+            [
+                'id' => 7,
+                'title' => "Champions",
+                'icon' => "fa-solid fa-people-group",
+                'link' => "/admin/champions",
+            ],
         ];
         foreach ($menuItems as $item) {
             if ($menu = Menu::find($item['id'])) {

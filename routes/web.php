@@ -62,6 +62,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("champions", [ChampionController::class, 'index'])->name('championIndex');
   Route::get("champions/create", [ChampionController::class, 'create'])->name('championCreate');
   Route::post("champions/store", [ChampionController::class, 'store'])->name('championStore');
+  Route::get("champions/{id}/edit", [ChampionController::class, 'edit'])->name('championEdit');
+  Route::post("champions/{id}/update", [ChampionController::class, 'update'])->name('championUpdate');
+  Route::post("champions/{id}/destroy", [ChampionController::class, 'destroy'])->name('championDestroy');
 
   Route::get("books", [BookController::class, 'index'])->name('chessBookIndex');
 

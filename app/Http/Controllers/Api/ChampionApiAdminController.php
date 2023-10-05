@@ -12,6 +12,9 @@ class ChampionApiAdminController extends Controller
     {
         if ($gender == NULL) {
             $champions = Champion::all();
+            foreach ($champions as $champion) {
+                $champion->image = url($champion->image);
+            }
         } else {
             $champions = Champion::where('gender', $gender);
         }
