@@ -8,6 +8,7 @@ use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
+use App\Http\Controllers\TeamChampionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
 use App\Models\book;
@@ -65,6 +66,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("champions/{id}/edit", [ChampionController::class, 'edit'])->name('championEdit');
   Route::post("champions/{id}/update", [ChampionController::class, 'update'])->name('championUpdate');
   Route::post("champions/{id}/destroy", [ChampionController::class, 'destroy'])->name('championDestroy');
+  Route::get("champions", [ChampionController::class, 'index'])->name('championIndex');
+
+  Route::get("team-champions", [TeamChampionController::class, 'index'])->name('teamChampionIndex');
+  Route::get("team-champions/create", [TeamChampionController::class, 'create'])->name('teamChampionCreate');
+  Route::post("team-champions/store", [TeamChampionController::class, 'store'])->name('teamChampionStore');
+  Route::get("team-champions/{id}/edit", [TeamChampionController::class, 'edit'])->name('teamChampionEdit');
+  Route::post("team-champions/{id}/update", [TeamChampionController::class, 'update'])->name('teamChampionUpdate');
+  Route::post("team-champions/{id}/destroy", [TeamChampionController::class, 'destroy'])->name('teamChampionDestroy');
 
   Route::get("books", [BookController::class, 'index'])->name('bookIndex');
   Route::get("books/create", [BookController::class, 'create'])->name('bookCreate');

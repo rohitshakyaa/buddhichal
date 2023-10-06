@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\TeamChampion;
 use App\Models\TeamChampionImage;
+use App\Models\TournamentImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class TeamChampionController extends Controller
@@ -15,12 +17,12 @@ class TeamChampionController extends Controller
      */
     public function index()
     {
-        return view('pages.teamchampions.index');
+        return view('pages.team champions.index');
     }
 
     public function create()
     {
-        return view('pages.teamchampions.create');
+        return view('pages.team champions.create');
     }
 
     public function store(Request $request)
@@ -31,7 +33,8 @@ class TeamChampionController extends Controller
             'location' => 'required|max:255',
             'phone_number' => 'required|min:8',
             'year' => 'required',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif'
+            'images' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif'
         ]);
 
         DB::beginTransaction();
@@ -39,6 +42,7 @@ class TeamChampionController extends Controller
             Log::info("prarameters for team champions");
             $teamChampion = new TeamChampion;
             $teamChampion->priority = $request->priority;
+            $teamChampion->title = $request->title;
             $teamChampion->captain_name = $request->captain_name;
             $teamChampion->location = $request->location;
             $teamChampion->phone_number = $request->phone_number;
@@ -47,17 +51,11 @@ class TeamChampionController extends Controller
 
             Log::info("teamchampion has been added", $teamChampion->toArray());
 
-            $images = [];
-
             foreach ($request->file('images') as $image) {
-                $imagePath = "images/teamChampions";
-                $path = public_path($imagePath);
-                $imageName = $teamChampion->id . '-' . now()->format('YmdHis') . '.' . $image->extension();
-                $image->move($path, $imageName);
-
-                $tournamentImage = TeamChampionImage::create([
+                $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image);
+                TeamChampionImage::create([
                     'team_champion_id' => $teamChampion->id,
-                    'image_path' => $imagePath . '/' . $imageName
+                    'image_path' => $imagePath
                 ]);
             }
             DB::commit();
@@ -66,6 +64,7 @@ class TeamChampionController extends Controller
             DB::rollBack();
             Log::error($e);
             return back()
+                ->withInput($request->input())
                 ->with('danger', 'something went wrong');
         }
     }
@@ -79,8 +78,12 @@ class TeamChampionController extends Controller
     {
         try {
             $teamChampion = TeamChampion::findOrFail($id);
-            $teamChampionImage = TeamChampionImage::where('team_champion_id', $teamChampion->id)->get();
-            return view('pages.champions.edit',compact('teamChampion','teamChampinImage'));
+            $teamChampionImages = TeamChampionImage::where('team_champion_id', $teamChampion->id)->select('id', 'image_path')->get();
+            foreach ($teamChampionImages as $image) {
+                $image->image_path = url($image->image_path);
+            };
+            $teamChampion->images = $teamChampionImages;
+            return view('pages.team champions.edit', compact('teamChampion'));
         } catch (\Exception $e) {
             Log::error($e);
             return back()->with('danger', 'teamChampion not found.');
@@ -98,8 +101,15 @@ class TeamChampionController extends Controller
                 'location' => 'required|max:255',
                 'phone_number' => 'required|min:8',
                 'year' => 'required',
-                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif'
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif'
             ]);
+            $imageCount = count($teamChampion->team_champion_images);
+            $removedImageIds = isset($request->removedImageIds) ? $request->removedImageIds : [];
+            if (count($removedImageIds) == $imageCount && !$request->images) {
+                return back()
+                    ->withInput($request->input())
+                    ->with('danger', "You can't update with empty images");
+            }
 
             DB::beginTransaction();
             try {
@@ -113,16 +123,27 @@ class TeamChampionController extends Controller
 
                 Log::info("teamchampion has been added", $teamChampion->toArray());
 
-                $images = [];
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $image) {
+                        $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image);
+                        TeamChampionImage::create([
+                            'team_champion_id' => $teamChampion->id,
+                            'image_path' => $imagePath
+                        ]);
+                    }
+                }
 
-                foreach ($request->file('images') as $image) {
-                    $imagePath = "images/teamChampion";
-                    $path = public_path($imagePath);
-                    $imageName = $teamChampion->id . '-' . now()->format('YmdHis') . '.' . $image->extension();
-                    $image->move($path, $imageName);
-                    DB::table('team_champion_images')
-                        ->where('team_champion_id', $teamChampion->id)
-                        ->update(['image_path' => $imagePath . '/' . $imageName]);
+                if (count($removedImageIds)) {
+                    foreach ($removedImageIds as $imageId) {
+                        $image = TeamChampionImage::find($imageId);
+                        if (!$image) {
+                            return back()
+                                ->withInput($request->input())
+                                ->with('danger', 'Image not found while removing');
+                        }
+                        File::delete(public_path($image->image_path));
+                        $image->delete();
+                    }
                 }
                 DB::commit();
                 return redirect(route('teamChampionIndex'))->with('success', 'team champions updated successfully');
@@ -130,6 +151,7 @@ class TeamChampionController extends Controller
                 DB::rollBack();
                 Log::error($e);
                 return back()
+                    ->withInput($request->input())
                     ->with('danger', 'something went wrong');
             }
         }
@@ -137,22 +159,21 @@ class TeamChampionController extends Controller
 
     public function destroy($id)
     {
-        DB::beginTransaction();
-        try {
-            $teamChampion = TeamChampion::findOrFail($id);
-            $teamChampion->delete();
-            DB::table('team_champion_mages')
-                ->where('team_champion_id', $id)
-                ->delete();
-
-            DB::commit();
-            return redirect(route('teamChampionIndex'))
-                ->with('success', 'TeamChampion and its images have been deleted.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e);
-            return back()
-                ->with('danger', 'Something went wrong while deleting the TeamChampion and images.');
+        $teamChampion = TeamChampion::findOrFail($id);
+        foreach ($teamChampion->team_champion_images as $image) {
+            File::delete(public_path($image->image_path));
         }
+        $teamChampion->delete();
+        return redirect(route('teamChampionIndex'))
+            ->with('success', 'TeamChampion and its images have been deleted.');
+    }
+
+    private function storeTeamChampionImage($teamChampionId, $imageFile)
+    {
+        $imagePath = "images/team-champions";
+        $path = public_path($imagePath);
+        $imageName = $teamChampionId . '-' . time() . '.' . $imageFile->extension();
+        $imageFile->move($path, $imageName);
+        return $imagePath . '/' . $imageName;
     }
 }

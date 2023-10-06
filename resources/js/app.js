@@ -8,6 +8,7 @@ import "./tabulators/TournamentPlayer.js";
 import "./tabulators/BannerTable";
 import "./tabulators/BookTable";
 import "./tabulators/ChampionTable";
+import "./tabulators/TeamChampionTable";
 
 if (
     localStorage.getItem("color-theme") === "dark" ||
