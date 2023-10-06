@@ -24,6 +24,6 @@ class UserController extends Controller
             Auth::attempt($admin);
             return redirect("/admin");
         }
-        return redirect("/register")->with('danger', "Incorrect password or login");
+        return back()->withInput($request->input())->with('danger', "Incorrect password or login");
     }
 }

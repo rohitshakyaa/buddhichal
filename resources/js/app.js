@@ -8,6 +8,7 @@ import "./tabulators/TournamentPlayer.js";
 import "./tabulators/BannerTable";
 import "./tabulators/BookTable";
 import "./tabulators/ChampionTable";
+import "./tabulators/TeamChampionTable";
 
 if (
     localStorage.getItem("color-theme") === "dark" ||
@@ -31,13 +32,16 @@ document.getElementById("toggle-theme").addEventListener("click", (e) => {
 function lightMode() {
     localStorage.setItem("color-theme", "light");
     document.documentElement.classList.remove("dark");
-    document.getElementById("toggle-theme").innerHTML =
-        '<i class="fa-solid fa-moon text-gray-400"></i>';
+    if (document.getElementById("toggle-theme"))
+        document.getElementById("toggle-theme").innerHTML =
+            '<i class="fa-solid fa-moon text-gray-400"></i>';
 }
 
 function darkMode() {
+    console.log("HERE");
     localStorage.setItem("color-theme", "dark");
-    document.getElementById("toggle-theme").innerHTML =
-        '<i class="fa-solid fa-sun text-white"></i>';
+    if (document.getElementById("toggle-theme"))
+        document.getElementById("toggle-theme").innerHTML =
+            '<i class="fa-solid fa-sun text-white"></i>';
     document.documentElement.classList.add("dark");
 }

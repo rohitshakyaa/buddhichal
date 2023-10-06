@@ -143,7 +143,7 @@ class TournamentController extends Controller
                         ->update(['image_path' => $imagePath . '/' . $imageName]);
                 }
                 DB::commit();
-                return redirect(route('tournamentIndex'))->with('success','torunament updated successfully');
+                return redirect(route('tournamentIndex'))->with('success', 'torunament updated successfully');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error($e);

@@ -37,12 +37,11 @@ Route::prefix('web/admin')->name('admin.')->group(function () {
     Route::get("tournaments", [TournamentApiAdminController::class, 'index']);
 
     Route::get("champions", [ChampionApiAdminController::class, 'index']);
-    Route::get("teamChampions", [TeamChampionApiAdminController::class, 'index']);
+    Route::get("team-champions", [TeamChampionApiAdminController::class, 'index']);
 
     Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
     Route::get("tournaments/players/create", [TournamentPlayerApiController::class, 'create']);
     Route::post("tournaments/players/{id}/store", [TournamentPlayerApiController::class, 'store']);
 
     Route::get("books", [ChessBookApiAdminController::class, 'index']);
-
 });
