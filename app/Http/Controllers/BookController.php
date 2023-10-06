@@ -31,7 +31,7 @@ class BookController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info('parameters for adding chessbook', $request->all());
+            Log::info('parameters for adding chess book', $request->all());
             $chessBook = new ChessBook;
             $chessBook->name = $request->name;
             $chessBook->type = $request->type;
@@ -49,13 +49,13 @@ class BookController extends Controller
 
             if ($request->hasFile('file_path')) {
                 $file = $request->file('file_path');
-                $filePath = 'public/pdfs';
+                $filePath = 'public/pdf';
                 $path = public_path($filePath);
                 $fileName = $chessBook->name . '-' . now()->format('YmdHis') . '-' . $file->extension();
                 $chessBook->file = $filePath . '/' . $fileName;
                 $chessBook->save();
             }
-            Log::info("Data saved for chessbooks with values: ", $chessBook->toArray());
+            Log::info("Data saved for chess books with values: ", $chessBook->toArray());
             DB::commit();
             return redirect(route('chessBookIndex'))->with('success', 'ChessBook added successfully');
         } catch (Throwable $e) {
@@ -85,7 +85,7 @@ class BookController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info('parameters for updating chessbook', $request->all());
+            Log::info('parameters for updating chess book', $request->all());
             $chessBook->name = $request->name;
             $chessBook->type = $request->type;
             $chessBook->save();
@@ -108,7 +108,7 @@ class BookController extends Controller
                 $chessBook->file = $filePath . '/' . $fileName;
                 $chessBook->save();
             }
-            Log::info("Data saved for chessbooks with values: ", $chessBook->toArray());
+            Log::info("Data updated for chess books with values: ", $chessBook->toArray());
             DB::commit();
             return redirect(route('chessBookIndex'))->with('success', 'ChessBook updated successfully');
         } catch (Throwable $e) {
@@ -123,5 +123,7 @@ class BookController extends Controller
     {
         $chessBook = ChessBook::findOrFail($id);
         $chessBook->delete();
+        return redirect(route('bookIndex'))
+            ->with('success', 'a book deleted successfully');
     }
 }

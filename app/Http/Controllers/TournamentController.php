@@ -46,7 +46,7 @@ class TournamentController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::info("paramenter for storing tournament", $request->all());
+            Log::info("parameter for storing tournament", $request->all());
             $tournament = Tournament::create([
                 'register' => $request->register,
                 'number' => $request->number,
@@ -121,7 +121,7 @@ class TournamentController extends Controller
             ]);
             DB::beginTransaction();
             try {
-                Log::info("paramenter for storing tournament", $request->all());
+                Log::info("parameter for storing tournament", $request->all());
                 $tournament->register = $request->register;
                 $tournament->number = $request->number;
                 $tournament->title = $request->title;

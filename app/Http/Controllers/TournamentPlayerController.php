@@ -59,7 +59,7 @@ class TournamentPlayerController extends Controller
         if ($tournamentPlayer) {
             return view('pages.tournament.playerIndex', compact('tournamentPlayer'));
         } else {
-            Log::error("tournamentPlayer notfound for id: $id");
+            Log::error("tournamentPlayer not found for id: $id");
             return back()->with('danger', 'tournamentPlayer not found.');
         }
     }
@@ -77,7 +77,7 @@ class TournamentPlayerController extends Controller
                 'address' => 'required',
                 'fide_id' => 'required',
                 'dob' => 'required',
-                'fide_rading' => 'required',
+                'fide_rating' => 'required',
                 'email' => 'required'
             ]);
             Log::info("Data saved for tournament player with values: ", $request->all());

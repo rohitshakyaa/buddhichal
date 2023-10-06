@@ -41,11 +41,11 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info("Data saved for banner with values: ", $validatedData);
+            Log::info("parameters for creating champion", $request->all());
             $champion = Champion::create($validatedData);
             $champion->image = $this->storeChampionImage($champion->id, $request->file('image'));
             $champion->save();
-            Log::info("Data saved for banner with values: ", $champion->toArray());
+            Log::info("Data saved for champion with values: ", $champion->toArray());
             DB::commit();
             return redirect(route('championIndex'))->with('success', 'champion added successfully');
         } catch (\Exception $e) {
@@ -78,7 +78,7 @@ class ChampionController extends Controller
         if ($champion) {
             return view('pages.champion.edit', compact('champion'));
         } else {
-            Log::error("Champion notfound for id: $id");
+            Log::error("Champion not found for id: $id");
             return back()->with('danger', 'Champion not found.');
         }
     }
@@ -98,6 +98,8 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
+            Log::info("parameters for updating champion", $request->all());
+
             $champion = Champion::findOrFail($id);
             if ($champion) {
                 $champion->from = $request->from;
@@ -107,6 +109,7 @@ class ChampionController extends Controller
                 $champion->save();
                 $champion->image = $this->storeChampionImage($champion->id, $request->file('image'));
                 $champion->save();
+                Log::info("Data updated for champion", $champion->all());
                 DB::commit();
                 return redirect(route('championIndex'))->with('success', 'champion updated successfully');
             }
@@ -126,6 +129,8 @@ class ChampionController extends Controller
         $champion = Champion::findOrFail($id);
         if ($champion) {
             $champion->delete();
+            return redirect(route('championIndex'))
+                ->with('success', 'champion deleted successfully');
         } else {
             Log::error("champion not found for id: $id");
             return back()
@@ -135,7 +140,7 @@ class ChampionController extends Controller
 
     /**
      * store image for champions
-    */
+     */
     private function storeChampionImage($championId, $imageFile)
     {
         $image_path = "images/champions";
