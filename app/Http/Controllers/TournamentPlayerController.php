@@ -14,7 +14,7 @@ class TournamentPlayerController extends Controller
      */
     public function index()
     {
-        return view("pages.tournament.playerIndex");
+        return view("pages.tournament player.index");
     }
 
     public function create()
@@ -99,6 +99,6 @@ class TournamentPlayerController extends Controller
         $tournamentPlayer = TournamentPlayer::findOrFail($id);
         $tournamentPlayer->delete();
         return redirect(route('tournamentPlayerIndex'))
-            ->with('success', 'player deleted successfully');
+            ->with('success', 'Player deleted successfully');
     }
 }

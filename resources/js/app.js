@@ -4,7 +4,7 @@ import "flowbite";
 import "tabulator-tables/dist/css/tabulator_midnight.min.css";
 import "./tabulators/TournamentTable.js";
 import "./tabulators/NcaMemberTable.js";
-import "./tabulators/TournamentPlayer.js";
+import "./tabulators/TournamentPlayerTable.js";
 import "./tabulators/BannerTable";
 import "./tabulators/BookTable";
 import "./tabulators/ChampionTable";

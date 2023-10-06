@@ -12,7 +12,10 @@ class TournamentPlayerApiController extends Controller
 {
     public function index()
     {
-        $tournamentPlayers = TournamentPlayer::select('tournament_id', 'name', 'phone_number', 'address', 'fide_id', 'email')->get();
+        $tournamentPlayers = TournamentPlayer::all();
+        foreach ($tournamentPlayers as $tournamentPlayer) {
+            $tournamentPlayer->tournament_title = $tournamentPlayer->tournament->title;
+        }
         return ApiResponseHelper::successResponseWithData($tournamentPlayers);
     }
 

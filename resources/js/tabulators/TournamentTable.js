@@ -11,6 +11,11 @@ const table1 = Table({
       width: 130,
     },
     {
+      title: "Id",
+      field: "id",
+      minWidth: 65,
+    },
+    {
       title: "Title",
       field: "title",
       minWidth: 200,
