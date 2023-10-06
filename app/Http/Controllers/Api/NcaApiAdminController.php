@@ -14,7 +14,7 @@ class NcaApiAdminController extends Controller
      */
     public function index()
     {
-        $ncaMembers = Nca::select("position", "name", "phone_number", "post", "email", "image")->orderBy('position', 'asc')->get();
+        $ncaMembers = Nca::select("id", "position", "name", "phone_number", "post", "email", "image")->orderBy('position', 'asc')->get();
         foreach ($ncaMembers as $ncaMember) {
             $imagePath = $ncaMember->image;
             $ncaMember->image = url($imagePath);

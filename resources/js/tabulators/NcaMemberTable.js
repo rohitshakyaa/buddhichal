@@ -1,7 +1,13 @@
-import { Table } from "./TableConfig";
+import { Table, actionComponent } from "./TableConfig";
 
 
 const columns = [
+  {
+    title: "Action",
+    formatter: actionFormatter,
+    resizable: false,
+    width: 130,
+  },
   {
     title: "Position",
     field: "position",
@@ -46,4 +52,14 @@ function ncalinkFormatter(cell) {
     return imgTag;
   }
   return "";
+}
+
+function actionFormatter(cell) {
+  const { id = 0 } = cell.getData();
+  return actionComponent({
+    edit: true,
+    editRoute: `/admin/ncas/${id}/edit`,
+    delete: true,
+    delRoute: `/admin/ncas/${id}/destroy`,
+  });
 }
