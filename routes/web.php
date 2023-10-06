@@ -46,6 +46,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
   Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
   Route::post("tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
+  Route::get("tournaments/{id}/edit", [TournamentController::class, 'edit'])->name('tournamentEdit');
+  Route::post("tournaments/{id}/update", [TournamentController::class, 'update'])->name('tournamentUpdate');
+  Route::post("tournaments/{id}/destroy", [TournamentController::class, 'destroy'])->name('tournamentDestroy');
 
   Route::get("ncas", [NcaController::class, 'index'])->name('ncaIndex');
   Route::get("ncas/create", [NcaController::class, 'create'])->name('ncaCreate');

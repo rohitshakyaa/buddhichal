@@ -17,8 +17,8 @@ return new class extends Migration
             $table->integer('number');
             $table->string('title');
             $table->text('description');
-            // $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('total_prize');
             $table->timestamps();
         });
