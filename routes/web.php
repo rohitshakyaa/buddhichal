@@ -8,6 +8,7 @@ use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamChampionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
@@ -46,12 +47,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
   Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
   Route::post("tournaments/store", [TournamentController::class, 'store'])->name("tournamentStore");
+  Route::get("tournaments/{id}/edit", [TournamentController::class, 'edit'])->name('tournamentEdit');
+  Route::post("tournaments/{id}/update", [TournamentController::class, 'update'])->name('tournamentUpdate');
+  Route::post("tournaments/{id}/destroy", [TournamentController::class, 'destroy'])->name('tournamentDestroy');
 
   Route::get("ncas", [NcaController::class, 'index'])->name('ncaIndex');
   Route::get("ncas/create", [NcaController::class, 'create'])->name('ncaCreate');
   Route::post("ncas/store", [NcaController::class, 'store'])->name('ncaStore');
+  Route::get("ncas/{id}/edit", [NcaController::class, 'edit'])->name('ncaEdit');
+  Route::post("ncas/{id}/update", [NcaController::class, 'update'])->name('ncaUpdate');
+  Route::post("ncas/{id}/destroy", [NcaController::class, 'destroy'])->name('ncaDestroy');
 
-  Route::get("tournament/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
 
   Route::get("banners", [BannerController::class, 'index'])->name('bannerIndex');
   Route::get("banners/create", [BannerController::class, 'create'])->name('bannerCreate');
@@ -82,10 +88,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::post("books/{id}/update", [BookController::class, 'update'])->name('bookUpdate');
   Route::post("books/{id}/destroy", [BookController::class, 'destroy'])->name('bookDestroy');
 
-  Route::get("tournaments/players", [TournamentPlayer::class, 'index'])->name('playerIndex');
-  Route::get("tournaments/players/create", [TournamentPlayer::class, 'create'])->name('playerCreate');
-  Route::post("tournaments/players/{id}/store", [TournamentPlayer::class, 'store'])->name('playerStore');
-  Route::get("tournaments/players/{id}/edit", [TournamentPlayer::class, 'edit'])->name('playerEdit');
-  Route::post("tournaments/players/{id}/{tournamentId}/update", [TournamentPlayer::class, 'update'])->name('playerUpdate');
-  Route::post("tournaments/players/{id}/destroy", [TournamentPlayer::class, 'destroy'])->name('playerDestroy');
+  Route::get("tournaments/players", [TournamentPlayerController::class, 'index'])->name('productIndex');
+  Route::get("tournaments/players/create", [TournamentPlayerController::class, 'create'])->name('tournamentPlayerCreate');
+  Route::post("tournaments/players/{id}/store", [TournamentPlayerController::class, 'store'])->name('tournamentPlayerStore');
+  Route::get("tournaments/players/{id}/edit", [TournamentPlayerController::class, 'edit'])->name('tournamentPlayerEdit');
+  Route::post("tournaments/players/{id}/{tournamentId}/update", [TournamentPlayerController::class, 'update'])->name('tournamentPlayerUpdate');
+  Route::post("tournaments/players/{id}/destroy", [TournamentPlayerController::class, 'destroy'])->name('tournamentPlayerDestroy');
+
+  Route::get("products", [ProductController::class, 'index'])->name('productIndex');
+  Route::get("products/create", [ProductController::class, 'create'])->name('productCreate');
+  Route::post("products/store", [ProductController::class, 'store'])->name('productStore');
+  Route::get("products/{id}/edit", [ProductController::class, 'edit'])->name('productEdit');
+  Route::post("products/{id}/update", [ProductController::class, 'update'])->name('productUpdate');
+  Route::post("products/{id}/destroy", [ProductController::class, 'destroy'])->name('productDestroy');
 });

@@ -81,7 +81,9 @@ class NcaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $nca = Nca::findOrFail($id);
+        $nca->image = url($nca->image);
+        return view("pages.nca.edit", compact('nca'));
     }
 
     /**
@@ -89,7 +91,7 @@ class NcaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request->all());
     }
 
     /**

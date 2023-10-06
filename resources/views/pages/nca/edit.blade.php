@@ -3,17 +3,17 @@
     <a href="{{ route('ncaIndex') }}" title="Go Back">
       <i class="dark:text-white fa-solid fa-arrow-left-long fa-xl"></i>
     </a>
-    <h1 class="dark:text-white text-2xl font-bold">Add NCA Member</h1>
+    <h1 class="dark:text-white text-2xl font-bold">Update NCA Member</h1>
   </div>
   <section class="mt-5">
-    <form method="POST" action="{{ route('ncaStore') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('ncaUpdate', $nca->id) }}" enctype="multipart/form-data">
       @csrf
       <section class="form-grid-3 mb-4">
-        <x-textbox id="name" label="Name" name="name" value="{{ old('name') }}" error="{{ $errors->first('name') }}" />
-        <x-textbox id="phone_number" type="number" label="Phone Number" name="phone_number" value="{{ old('phone_number') }}" error="{{ $errors->first('phone_number') }}" />
-        <x-textbox id="post" label="Post" name="post" value="{{ old('post') }}" error="{{ $errors->first('post') }}" />
-        <x-textbox id="email" type="email" label="Email" name="email" value="{{ old('email') }}" error="{{ $errors->first('email') }}" />
-        <x-textbox id="position" type="number" label="Position" name="position" value="{{ old('position') }}" error="{{ $errors->first('position') }}" />
+        <x-textbox id="name" label="Name" name="name" value="{{ old('name', $nca->name) }}" error="{{ $errors->first('name') }}" />
+        <x-textbox id="phone_number" type="number" label="Phone Number" name="phone_number" value="{{ old('phone_number', $nca->phone_number) }}" error="{{ $errors->first('phone_number') }}" />
+        <x-textbox id="post" label="Post" name="post" value="{{ old('post', $nca->post) }}" error="{{ $errors->first('post') }}" />
+        <x-textbox id="email" type="email" label="Email" name="email" value="{{ old('email', $nca->email) }}" error="{{ $errors->first('email') }}" />
+        <x-textbox id="position" type="number" label="Position" name="position" value="{{ old('position', $nca->position) }}" error="{{ $errors->first('position') }}" />
       </section>
       <div class="mb-4">
         <label class="form-label" for="image">Upload Image</label>
@@ -22,8 +22,14 @@
       <div class="mb-4">
         <div id="preview-img" class="w-64"></div>
       </div>
+      <div class="mb-4">
+        <h1 class="text-lg font-semibold">Current Image:</h1>
+        <div id="preview-img" class="w-64">
+          <img src="{{ $nca->image }}" alt="">
+        </div>
+      </div>
       <button type="submit" class="button button-default">
-        Add
+        Update
       </button>
     </form>
   </section>

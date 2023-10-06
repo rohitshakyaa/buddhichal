@@ -84,7 +84,7 @@ class BookController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info('parameters for updating chessbook', $request->all());
+            Log::info('parameters for updating chess book', $request->all());
             $chessBook->name = $request->name;
             $chessBook->type = $request->type;
             $chessBook->save();

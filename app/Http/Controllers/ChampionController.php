@@ -103,6 +103,8 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
+            Log::info("parameters for updating champion", $request->all());
+
             $champion = Champion::findOrFail($id);
             if ($champion) {
                 $champion->name = $validatedData["name"];

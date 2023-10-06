@@ -14,7 +14,7 @@ class TournamentPlayerController extends Controller
      */
     public function index()
     {
-        return view("pages.tournament.playerIndex");
+        return view("pages.tournament player.index");
     }
 
     public function create()
@@ -35,7 +35,7 @@ class TournamentPlayerController extends Controller
                 'address' => 'required',
                 'fide_id' => 'required',
                 'dob' => 'required',
-                'fide_rading' => 'required',
+                'fide_rating' => 'required',
                 'email' => 'required'
             ]);
             Log::info("Data saved for tournament player with values: ", $request->all());
@@ -59,7 +59,7 @@ class TournamentPlayerController extends Controller
         if ($tournamentPlayer) {
             return view('pages.tournament.playerIndex', compact('tournamentPlayer'));
         } else {
-            Log::error("tournamentPlayer notfound for id: $id");
+            Log::error("tournamentPlayer not found for id: $id");
             return back()->with('danger', 'tournamentPlayer not found.');
         }
     }
@@ -77,7 +77,7 @@ class TournamentPlayerController extends Controller
                 'address' => 'required',
                 'fide_id' => 'required',
                 'dob' => 'required',
-                'fide_rading' => 'required',
+                'fide_rating' => 'required',
                 'email' => 'required'
             ]);
             Log::info("Data saved for tournament player with values: ", $request->all());
@@ -99,6 +99,6 @@ class TournamentPlayerController extends Controller
         $tournamentPlayer = TournamentPlayer::findOrFail($id);
         $tournamentPlayer->delete();
         return redirect(route('tournamentPlayerIndex'))
-            ->with('success', 'player deleted successfully');
+            ->with('success', 'Player deleted successfully');
     }
 }
