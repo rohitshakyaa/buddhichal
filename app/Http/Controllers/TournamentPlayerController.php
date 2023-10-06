@@ -35,7 +35,7 @@ class TournamentPlayerController extends Controller
                 'address' => 'required',
                 'fide_id' => 'required',
                 'dob' => 'required',
-                'fide_rading' => 'required',
+                'fide_rating' => 'required',
                 'email' => 'required'
             ]);
             Log::info("Data saved for tournament player with values: ", $request->all());

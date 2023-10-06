@@ -15,6 +15,7 @@ class ChessBookApiAdminController extends Controller
             ->get();
         foreach ($chessBooks as $chessBook) {
             $chessBook->file_path = url($chessBook->file_path);
+            $chessBook->image = url($chessBook->image);
         }
         return ApiResponseHelper::successResponseWithData($chessBooks);
     }
