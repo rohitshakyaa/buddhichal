@@ -5,16 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponseHelper;
 use App\Models\Tournament;
+use Illuminate\Http\Request;
 
 class TournamentApiAdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tournaments = Tournament::with(['tournament_images' => function ($query) {
+        $query = Tournament::with(['tournament_images' => function ($query) {
             $query->select('tournament_id', 'image_path');
         }])
-            ->select("id", "register", "number", "title", "description", "start_date", "end_date", "total_prize")
-            ->get();
+            ->select("id", "register", "number", "title", "description", "start_date", "end_date", "total_prize");
+        if ($id = $request->get('id')) {
+            $query = $query->where("id", $id);
+        }
+        $tournaments = $query->get();
+
 
         $response = $tournaments->map(function ($tournament) {
             return [

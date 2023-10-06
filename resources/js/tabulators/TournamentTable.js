@@ -1,14 +1,17 @@
 import { Table, actionComponent } from "./TableConfig";
 
 
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
+
 const table1 = Table({
-  tableId: "tournament-table", apiUrl: "/api/web/admin/tournaments", columns: [
+  tableId: "tournament-table", apiUrl: `/api/web/admin/tournaments${id ? `?id=${id}` : ""}`, columns: [
 
     {
       title: "Action",
       formatter: actionFormatter,
       resizable: false,
-      width: 130,
+      width: 200,
     },
     {
       title: "Id",
@@ -18,7 +21,7 @@ const table1 = Table({
     {
       title: "Title",
       field: "title",
-      minWidth: 200,
+      minWidth: 150,
     },
     {
       title: "Contact Number",
@@ -57,19 +60,28 @@ const table1 = Table({
       title: "Images",
       field: "images",
       formatter: imagesFormatter,
-      minWidth: 300,
+      minWidth: 280,
     },
   ]
 });
 
 function actionFormatter(cell) {
   const { id = 0 } = cell.getData();
-  return actionComponent({
+  const parent = document.createElement("parent");
+  parent.setAttribute("class", "flex gap-2");
+  parent.appendChild(actionComponent({
     edit: true,
     editRoute: `/admin/tournaments/${id}/edit`,
     delete: true,
     delRoute: `/admin/tournaments/${id}/destroy`,
-  });
+  }));
+  const btn = document.createElement("a");
+  btn.setAttribute("class", "button button-yellow button-xs");
+  btn.innerText = "View Players";
+  btn.href = `/admin/tournaments/players?tournament_id=${id}`;
+  parent.appendChild(btn);
+  return parent;
+
 }
 
 

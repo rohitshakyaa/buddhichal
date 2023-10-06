@@ -1,8 +1,10 @@
 import { Table, actionComponent } from "./TableConfig";
 
+const urlParams = new URLSearchParams(window.location.search);
+const tournament_id = urlParams.get('tournament_id');
 
 const table = Table({
-  tableId: "tournament-player-table", apiUrl: "/api/web/admin/tournaments/players", columns: [
+  tableId: "tournament-player-table", apiUrl: `/api/web/admin/tournaments/players${tournament_id ? `?tournament_id=${tournament_id}` : ""}`, columns: [
     {
       title: "Action",
       formatter: actionFormatter,
@@ -12,6 +14,7 @@ const table = Table({
     {
       title: "Tournament Title",
       field: "tournament_title",
+      formatter: tournamentLinkFormatter,
       minWidth: 165,
     },
     {
@@ -59,4 +62,16 @@ function actionFormatter(cell) {
     delete: true,
     delRoute: `/admin/tournaments/players/${id}/destroy`,
   });
+}
+
+function tournamentLinkFormatter(cell) {
+  const { tournament_id = 0 } = cell.getData();
+  if (cell.getValue()) {
+    const imgTag = document.createElement('a');
+    imgTag.href = `/admin/tournaments?id=${tournament_id}`;
+    imgTag.innerText = cell.getValue();
+    imgTag.setAttribute("class", "underline text-blue-500 hover:text-blue-600 ")
+    return imgTag;
+  }
+  return "";
 }
