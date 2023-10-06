@@ -9,6 +9,7 @@ import "./tabulators/BannerTable";
 import "./tabulators/BookTable";
 import "./tabulators/ChampionTable";
 import "./tabulators/TeamChampionTable";
+import "./tabulators/ProductTable";
 
 if (
     localStorage.getItem("color-theme") === "dark" ||

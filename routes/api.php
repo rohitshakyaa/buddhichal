@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BannerApiController;
 use App\Http\Controllers\Api\ChampionApiAdminController;
 use App\Http\Controllers\Api\ChessBookApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
+use App\Http\Controllers\Api\ProductApiAdminController;
 use App\Http\Controllers\Api\TeamChampionApiAdminController;
 use App\Http\Controllers\Api\TournamentApiAdminController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
@@ -44,4 +45,6 @@ Route::prefix('web/admin')->name('admin.')->group(function () {
     Route::post("tournaments/players/{id}/store", [TournamentPlayerApiController::class, 'store']);
 
     Route::get("books", [ChessBookApiAdminController::class, 'index']);
+
+    Route::get("products", [ProductApiAdminController::class, 'index']);
 });
