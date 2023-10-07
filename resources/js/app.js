@@ -1,5 +1,6 @@
 import "./bootstrap";
 import "flowbite";
+import "./font-awesome.min.js";
 
 import "tabulator-tables/dist/css/tabulator_midnight.min.css";
 import "./tabulators/TournamentTable.js";
