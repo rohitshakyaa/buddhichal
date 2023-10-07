@@ -7,20 +7,25 @@ use App\Http\Helpers\ApiResponseHelper;
 use App\Models\Nca;
 use Illuminate\Http\Request;
 
-class NcaApiAdminController extends Controller
+class NcaApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $ncaMembers = Nca::select("id", "position", "name", "phone_number", "post", "email", "image")->orderBy('position', 'asc')->get();
-        foreach ($ncaMembers as $ncaMember) {
-            $imagePath = $ncaMember->image;
-            $ncaMember->image = url($imagePath);
-        }
+        $ncaMembers = Nca::select("id", "position", "name", "phone_number", "post", "email", "image")
+            ->orderBy('position', 'asc')
+            ->get();
+
+        $ncaMembers->transform(function ($ncaMember) {
+            $ncaMember->image = url($ncaMember->image);
+            return $ncaMember;
+        });
+
         return ApiResponseHelper::successResponseWithData($ncaMembers);
     }
+
 
     /**
      * Show the form for creating a new resource.

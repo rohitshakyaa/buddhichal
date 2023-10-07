@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\BannerApiController;
-use App\Http\Controllers\Api\ChampionApiAdminController;
-use App\Http\Controllers\Api\ChessBookApiAdminController;
-use App\Http\Controllers\Api\NcaApiAdminController;
-use App\Http\Controllers\Api\ProductApiAdminController;
-use App\Http\Controllers\Api\ProductClientApiAdminController;
-use App\Http\Controllers\Api\TeamChampionApiAdminController;
-use App\Http\Controllers\Api\TournamentApiAdminController;
+use App\Http\Controllers\Api\ChampionApiController;
+use App\Http\Controllers\Api\ChessBookApiController;
+use App\Http\Controllers\Api\NcaApiController;
+use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\ProductClientApiController;
+use App\Http\Controllers\Api\TeamChampionApiController;
+use App\Http\Controllers\Api\TournamentApiController;
 use App\Http\Controllers\Api\TournamentPlayerApiController;
-use App\Http\Controllers\TournamentPlayerController;
 use App\Models\Tournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,23 +28,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get("tournaments", [TournamentApiController::class, 'index']);
+Route::post("tournaments/players/store", [TournamentPlayerApiController::class, 'store']);
+Route::get("nca-members", [NcaApiController::class, 'index']);
+Route::get("banners", [BannerApiController::class, 'index']);
+Route::get("champions/team", [TeamChampionApiController::class, 'index']);
+Route::get("champions/{gender}", [ChampionApiController::class, 'index']);
+Route::get("books", [ChessBookApiController::class, 'index']);
+// Route::get("team-champions")
 
-Route::prefix('web/admin')->name('admin.')->group(function () {
-    Route::get("banners", [BannerApiAdminController::class, 'index']);
-
-    Route::get("ncas", [NcaApiAdminController::class, 'index']);
-
-    Route::get("tournaments", [TournamentApiAdminController::class, 'index']);
-
-    Route::get("champions", [ChampionApiAdminController::class, 'index']);
-    Route::get("team-champions", [TeamChampionApiAdminController::class, 'index']);
-
+/* ----------  data table -------------- */
+Route::prefix('web/admin')->name('.')->group(function () {
+    Route::get("banners", [BannerApiController::class, 'index']);
+    Route::get("ncas", [NcaApiController::class, 'index']);
+    Route::get("tournaments", [TournamentApiController::class, 'getDataForDataTable']);
+    Route::get("champions", [ChampionApiController::class, 'index']);
+    Route::get("team-champions", [TeamChampionApiController::class, 'getDataForDataTable']);
     Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
-    Route::get("tournaments/players/create", [TournamentPlayerApiController::class, 'create']);
-    Route::post("tournaments/players/{id}/store", [TournamentPlayerApiController::class, 'store']);
-
-    Route::get("books", [ChessBookApiAdminController::class, 'index']);
-
-    Route::get("products", [ProductApiAdminController::class, 'index']);
-    Route::get("products/clients", [ProductClientApiAdminController::class, 'index']);
+    Route::get("books", [ChessBookApiController::class, 'index']);
+    Route::get("products", [ProductApiController::class, 'index']);
+    Route::get("products/clients", [ProductClientApiController::class, 'index']);
 });

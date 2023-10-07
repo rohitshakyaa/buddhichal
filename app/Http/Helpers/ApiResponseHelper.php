@@ -35,9 +35,9 @@ class ApiResponseHelper
   {
     return response()->json([
       "status" => "0",
-      "statusCode" => 411,
+      "statusCode" => 422,
       "message" => $message
-    ], 411);
+    ], 422);
   }
 
   public static function successResponseWithData($data, $message = "Data Found")
@@ -58,5 +58,15 @@ class ApiResponseHelper
       'statusCode' => 404,
       'message'   => $message
     ], 404);
+  }
+
+  public static function methodNotAllowedResponse($message = "Method not allowed.")
+  {
+    return response()->json([
+
+      'status'    => "0",
+      'statusCode' => 405,
+      'message'   => $message
+    ], 405);
   }
 }

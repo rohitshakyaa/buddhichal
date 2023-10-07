@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponseHelper;
 use App\Models\Tournament;
 use App\Models\TournamentPlayer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TournamentPlayerApiController extends Controller
 {
@@ -23,30 +24,41 @@ class TournamentPlayerApiController extends Controller
         return ApiResponseHelper::successResponseWithData($tournamentPlayers);
     }
 
-    public function store(Request $request, $id)
+    public function store(Request $request, Tournament $tournament)
     {
-        $tournament = Tournament::findOrFail($id);
-        if ($tournament) {
-            $request->validate([
-                'name' => 'required',
-                'phone_number' => 'required',
-                'address' => 'required',
-                'fide_id' => 'required',
-                'dob' => 'required',
-                'fide_rading' => 'required',
-                'email' => 'required'
-            ]);
+        Log::info("Parameters for storing tournament players: ", $request->all());
 
-            $tournamentPlayer = new TournamentPlayer;
-            $tournamentPlayer->tournament_id = $id;
-            $tournamentPlayer->name = $request->name;
-            $tournamentPlayer->address = $request->address;
-            $tournamentPlayer->fide_id = $request->fide_id;
-            $tournamentPlayer->dob = $request->dob;
-            $tournamentPlayer->fide_rating = $request->fide_rating;
-            $tournamentPlayer->email = $request->email;
-            $tournamentPlayer->save();
-            return ApiResponseHelper::successResponseWithData($tournamentPlayer);
+        $request->validate([
+            'tournament_id' => 'required',
+            'name' => 'required',
+            'phone_number' => 'required',
+            'address' => 'required',
+            'fide_id' => 'required',
+            'dob' => 'required',
+            'fide_rating' => 'required',
+            'email' => 'required|unique:tournament_players',
+        ]);
+
+        // Validate tournament existence
+        if (!$tournament->exists($request->tournament_id)) {
+            Log::error("Tournament not found with {$request->tournament_id}");
+            return ApiResponseHelper::notFoundResponse("Tournament not found with id {$request->tournament_id}");
         }
+
+        // Create a new tournament player
+        $tournamentPlayer = TournamentPlayer::create($request->only([
+            'tournament_id',
+            'name',
+            'phone_number',
+            'address',
+            'fide_id',
+            'dob',
+            'fide_rating',
+            'email',
+        ]));
+
+        Log::info("Tournament Player stored successfully", $tournamentPlayer->toArray());
+
+        return ApiResponseHelper::successResponse("Player registered successfully.");
     }
 }
