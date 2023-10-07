@@ -84,7 +84,7 @@ class BookController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info('parameters for updating chessbook', $request->all());
+            Log::info('parameters for updating chess book', $request->all());
             $chessBook->name = $request->name;
             $chessBook->type = $request->type;
             $chessBook->save();
@@ -99,7 +99,7 @@ class BookController extends Controller
                 $chessBook->book_file = $this->storeBookFile($chessBook->id, $request->file('book_file'));
             }
             $chessBook->save();
-            Log::info("Data saved for chessbooks with values: ", $chessBook->toArray());
+            Log::info("Data updated for chess books with values: ", $chessBook->toArray());
             DB::commit();
             return redirect(route('bookIndex'))->with('success', 'ChessBook updated successfully');
         } catch (Throwable $e) {

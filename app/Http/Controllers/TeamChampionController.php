@@ -39,7 +39,7 @@ class TeamChampionController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info("prarameters for team champions");
+            Log::info("parameters for team champions");
             $teamChampion = new TeamChampion;
             $teamChampion->priority = $request->priority;
             $teamChampion->title = $request->title;
@@ -49,15 +49,17 @@ class TeamChampionController extends Controller
             $teamChampion->year = $request->year;
             $teamChampion->save();
 
-            Log::info("teamchampion has been added", $teamChampion->toArray());
+            Log::info("team champion has been added", $teamChampion->toArray());
 
             foreach ($request->file('images') as $image) {
                 $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image);
-                TeamChampionImage::create([
+                $teamChampionImage = TeamChampionImage::create([
                     'team_champion_id' => $teamChampion->id,
                     'image_path' => $imagePath
                 ]);
+                Log::info("team champion images has been added", $teamChampionImage->toArray());
             }
+            Log::info("Data saved for team champions with images");
             DB::commit();
             return redirect(route('teamChampionIndex'))->with('success', 'team champions created successfully');
         } catch (\Exception $e) {
@@ -113,7 +115,7 @@ class TeamChampionController extends Controller
 
             DB::beginTransaction();
             try {
-                Log::info("prarameters for team champions");
+                Log::info("parameters for updating team champions");
                 $teamChampion->priority = $request->priority;
                 $teamChampion->captain_name = $request->captain_name;
                 $teamChampion->location = $request->location;
@@ -121,7 +123,7 @@ class TeamChampionController extends Controller
                 $teamChampion->year = $request->year;
                 $teamChampion->save();
 
-                Log::info("teamchampion has been added", $teamChampion->toArray());
+                Log::info("team champion has been updated", $teamChampion->toArray());
 
                 if ($request->hasFile('images')) {
                     foreach ($request->file('images') as $image) {
@@ -145,6 +147,7 @@ class TeamChampionController extends Controller
                         $image->delete();
                     }
                 }
+                Log::info("Data for team champions has been updated successfully", $teamChampion->toArray());
                 DB::commit();
                 return redirect(route('teamChampionIndex'))->with('success', 'team champions updated successfully');
             } catch (\Exception $e) {

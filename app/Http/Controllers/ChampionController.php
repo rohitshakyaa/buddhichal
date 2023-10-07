@@ -42,7 +42,7 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info("Data saved for champion with values: ", $validatedData);
+            Log::info("parameters for creating champion", $request->all());
             $champion = Champion::create($validatedData);
             $champion->image = $this->storeChampionImage($champion->id, $request->file('image'));
             $champion->save();
@@ -103,6 +103,8 @@ class ChampionController extends Controller
 
         DB::beginTransaction();
         try {
+            Log::info("parameters for updating champion", $request->all());
+
             $champion = Champion::findOrFail($id);
             if ($champion) {
                 $champion->name = $validatedData["name"];
@@ -115,6 +117,7 @@ class ChampionController extends Controller
                     $champion->image = $this->storeChampionImage($champion->id, $request->file('image'));
                     $champion->save();
                 }
+                Log::info("Data updated for champion", $champion->all());
                 DB::commit();
                 return redirect(route('championIndex'))->with('success', 'champion updated successfully');
             }

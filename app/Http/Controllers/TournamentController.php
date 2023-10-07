@@ -47,7 +47,7 @@ class TournamentController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::info("paramenter for storing tournament", $request->all());
+            Log::info("parameter for storing tournament", $request->all());
             $tournament = Tournament::create([
                 'register' => $request->register,
                 'number' => $request->number,
@@ -118,14 +118,14 @@ class TournamentController extends Controller
             'total_prize' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif'
         ]);
-        dd($request->all());
         DB::beginTransaction();
         try {
-            Log::info("paramenter for storing tournament", $request->all());
+            Log::info("parameter for storing tournament", $request->all());
+
             $tournament->register = $request->register;
             $tournament->number = $request->number;
             $tournament->title = $request->title;
-            $tournament->description = "I am Rohit.";
+            $tournament->description = $request->description;
             $tournament->start_date = $request->start_date;
             $tournament->end_date = $request->end_date;
             $tournament->total_prize = $request->total_prize;
@@ -138,7 +138,7 @@ class TournamentController extends Controller
                     ->update(['image_path' => $imagePath]);
             }
             DB::commit();
-            return redirect(route('tournamentIndex'))->with('success', 'torunament updated successfully');
+            return redirect(route('tournamentIndex'))->with('success', 'Tournament updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);
