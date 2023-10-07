@@ -37,13 +37,15 @@ Route::get("/", function () {
 Route::get('/book/{id}', [BookController::class, 'getBookByType']);
 
 
-Route::get("/admin", [DashboardController::class, 'dashboardPage']);
-Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
-Route::get("/admin/login", [UserController::class, 'loginPage'])->name('login');
+Route::get("/admin/login", [UserController::class, 'loginPage'])->name('loginPage');
 Route::post("/admin/login", [UserController::class, 'login'])->name('login');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
+  Route::get("/", function () {
+    return redirect(route('dashboard'));
+  });
+  Route::get("/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
   Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
   Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
@@ -105,4 +107,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
   Route::get("products/clients", [ProductClientController::class, 'index'])->name('productClientIndex');
   Route::get("products/clients/{id}/destroy", [ProductClientController::class, 'destroy'])->name('productClientDestroy');
+
+  Route::get("change-password", [UserController::class, 'changePasswordPage'])->name('changePasswordPage');
+  Route::post("change-password", [UserController::class, 'changePassword'])->name('changePassword');
+  Route::get("logout", [UserController::class, 'logout'])->name('logout');
 });
