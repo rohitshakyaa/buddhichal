@@ -8,6 +8,7 @@ use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
+use App\Http\Controllers\ProductClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamChampionController;
 use App\Http\Controllers\TournamentController;
@@ -101,4 +102,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("products/{id}/edit", [ProductController::class, 'edit'])->name('productEdit');
   Route::post("products/{id}/update", [ProductController::class, 'update'])->name('productUpdate');
   Route::post("products/{id}/destroy", [ProductController::class, 'destroy'])->name('productDestroy');
+
+  Route::get("products/clients", [ProductClientController::class, 'index'])->name('productClientIndex');
+  Route::get("products/clients/{id}/destroy", [ProductClientController::class, 'destroy'])->name('productClientDestroy');
 });

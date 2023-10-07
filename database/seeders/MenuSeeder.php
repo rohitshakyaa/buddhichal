@@ -69,7 +69,14 @@ class MenuSeeder extends Seeder
                 'icon' => "fa-solid fa-chess-board",
                 'link' => "/admin/products",
             ],
+            [
+                'id' => 10,
+                'title' => "Product Clients",
+                'icon' => "fa-solid fa-chess-board",
+                'link' => "/admin/products/clients",
+            ],
         ];
+
         foreach ($menuItems as $item) {
             if ($menu = Menu::find($item['id'])) {
                 $menu->update($item);
