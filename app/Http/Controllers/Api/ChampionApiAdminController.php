@@ -11,14 +11,12 @@ class ChampionApiAdminController extends Controller
     public function index($gender = NULL)
     {
         if ($gender == NULL) {
-            $champions = Champion::select('id', 'name', 'from', 'game_at', 'gender', 'image', 'date')->get();
+            $champions = Champion::all();
             foreach ($champions as $champion) {
                 $champion->image = url($champion->image);
             }
         } else {
-            $champions = Champion::where('gender', $gender)
-                ->select('id', 'name', 'from', 'game_at', 'gender', 'image', 'date')
-                ->get();
+            $champions = Champion::where('gender', $gender)->all();
             foreach ($champions as $champion) {
                 $champion->image = url($champion->image);
             }

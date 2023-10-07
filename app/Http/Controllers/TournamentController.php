@@ -118,6 +118,7 @@ class TournamentController extends Controller
             'total_prize' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif'
         ]);
+
         DB::beginTransaction();
         try {
             Log::info("parameter for storing tournament", $request->all());
@@ -133,9 +134,11 @@ class TournamentController extends Controller
 
             foreach ($request->file('images') as $image) {
                 $imagePath = $this->storeTournamentImage($tournament->id, $image);
-                DB::table('tournament_images')
-                    ->where('tournament_id', $tournament->id)
-                    ->update(['image_path' => $imagePath]);
+                $tournamentImage = TournamentImage::create([
+                    'tournament_id' => $tournament->id,
+                    'image_path' => $imagePath
+                ]);
+                Log::info("Tournament images has been added.", $tournamentImage->toArray());
             }
             DB::commit();
             return redirect(route('tournamentIndex'))->with('success', 'Tournament updated successfully');
@@ -172,7 +175,7 @@ class TournamentController extends Controller
 
     private function storeTournamentImage($tournamentId, $imageFile)
     {
-        $imagePath = "images/banners";
+        $imagePath = "images/tournaments";
         $path = public_path($imagePath);
         $imageName = $tournamentId . '-' . time() . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);

@@ -29,6 +29,9 @@
         </div>
       </section>
       <div class="mb-4">
+        <x-textarea class="mb-4" id="description" label="Description" name="description" value="{{ old('description', $tournament->description) }}" error="{{ $errors->first('description') }}" />
+      </div>
+      <div class="mb-4">
         <label class="form-label" for="images">Upload Images</label>
         <input accept="image/jpeg, image/jpg, image/png" class="file-input" id="images" name="images[]" type="file" multiple>
         @if($error = $errors->first('images'))

@@ -1,0 +1,7 @@
+{
+  "printWidth": 400,
+  "semi": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "htmlWhitespaceSensitivity": "css"
+}
