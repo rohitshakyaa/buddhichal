@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('image');
             $table->string('name');
             $table->enum('type', Constant::$bookTypes);
+            $table->unsignedBigInteger('book_type_id');
+            $table->foreign('book_type_id')->references('id')->on('book_types')->onDelete('cascade');
             $table->string('book_file');
             $table->timestamps();
         });

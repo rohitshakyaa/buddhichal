@@ -30,7 +30,7 @@ class MenuSeeder extends Seeder
             [
                 'id' => 3,
                 'title' => "Tournament Players",
-                'icon' => "fa-solid fa-chess-knight",
+                'icon' => "fa-solid fa-people-group",
                 'link' => "/admin/tournaments/players",
             ],
             [
@@ -65,14 +65,20 @@ class MenuSeeder extends Seeder
             ],
             [
                 'id' => 9,
+                'title' => "Book Types",
+                'icon' => "fa-solid fa-book-bookmark",
+                'link' => "/admin/books/types",
+            ],
+            [
+                'id' => 10,
                 'title' => "Products",
                 'icon' => "fa-solid fa-chess-board",
                 'link' => "/admin/products",
             ],
             [
-                'id' => 10,
+                'id' => 11,
                 'title' => "Product Clients",
-                'icon' => "fa-solid fa-chess-board",
+                'icon' => "fa-solid fa-user-group",
                 'link' => "/admin/products/clients",
             ],
         ];

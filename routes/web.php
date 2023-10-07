@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BannerApiAdminController;
 use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
@@ -83,6 +84,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("team-champions/{id}/edit", [TeamChampionController::class, 'edit'])->name('teamChampionEdit');
   Route::post("team-champions/{id}/update", [TeamChampionController::class, 'update'])->name('teamChampionUpdate');
   Route::post("team-champions/{id}/destroy", [TeamChampionController::class, 'destroy'])->name('teamChampionDestroy');
+
+  Route::get("books/types", [BookTypeController::class, 'index'])->name('bookTypeIndex');
+  Route::get("books/types/create", [BookTypeController::class, 'create'])->name('bookTypeCreate');
+  Route::post("books/types/store", [BookTypeController::class, 'store'])->name('bookTypeStore');
+  Route::get("books/types/{id}/edit/", [BookTypeController::class, 'edit'])->name('bookTypeEdit');
+  Route::post("books/types/{id}/update", [BookTypeController::class, 'update'])->name('bookTypeUpdate');
+  Route::post("books/types/{id}/destroy", [BookTypeController::class, 'destroy'])->name('bookTypeDestroy');
 
   Route::get("books", [BookController::class, 'index'])->name('bookIndex');
   Route::get("books/create", [BookController::class, 'create'])->name('bookCreate');

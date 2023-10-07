@@ -7,6 +7,7 @@ import "./tabulators/TournamentTable.js";
 import "./tabulators/NcaMemberTable.js";
 import "./tabulators/TournamentPlayerTable.js";
 import "./tabulators/BannerTable";
+import "./tabulators/BookTypeTable";
 import "./tabulators/BookTable";
 import "./tabulators/ChampionTable";
 import "./tabulators/TeamChampionTable";
