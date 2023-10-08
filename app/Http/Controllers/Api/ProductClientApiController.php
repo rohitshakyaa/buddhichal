@@ -11,6 +11,7 @@ class ProductClientApiAdminController extends Controller
 {
   public function index()
   {
+    return ApiResponseHelper::errorResponse("This api is in development.");
     $productClients = [];
     return ApiResponseHelper::successResponseWithData($productClients);
   }
