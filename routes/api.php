@@ -36,7 +36,9 @@ Route::get("banners", [BannerApiController::class, 'index']);
 Route::get("champions/team", [TeamChampionApiController::class, 'index']);
 Route::get("champions/{gender}", [ChampionApiController::class, 'index']);
 Route::get("books", [ChessBookApiController::class, 'index']);
-// Route::get("team-champions")
+Route::get("books/types", [BookTypeApiController::class, 'index']);
+Route::get("products", [ProductApiController::class, 'index']);
+Route::post("products/clients/store", [ProductClientApiController::class, 'store']);
 
 /* ----------  data table -------------- */
 Route::prefix('web/admin')->name('.')->group(function () {

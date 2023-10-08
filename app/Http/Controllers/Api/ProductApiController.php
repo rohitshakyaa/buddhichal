@@ -7,7 +7,7 @@ use App\Http\Helpers\ApiResponseHelper;
 use App\Models\Tournament;
 use Illuminate\Http\Request;
 
-class ProductApiAdminController extends Controller
+class ProductApiController extends Controller
 {
   public function index(Request $request)
   {

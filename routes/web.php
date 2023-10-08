@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\BannerApiAdminController;
-use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookTypeController;
@@ -14,9 +12,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamChampionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
-use App\Models\book;
-use App\Models\Tournament;
-use App\Models\TournamentPlayer;
 use Illuminate\Support\Facades\Route;
 
 /*
