@@ -10,7 +10,7 @@ class BookTypeApiController extends Controller
 {
     public function index()
     {
-        $bookTypes = BookType::select("id", "key", "title")->get();
+        $bookTypes = BookType::select("id", "title")->get();
         return ApiResponseHelper::successResponseWithData($bookTypes);
     }
 }

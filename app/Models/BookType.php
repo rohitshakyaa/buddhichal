@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class BookType extends Model
 {
     use HasFactory;
-    protected $fillable = ['key', 'title'];
+    protected $fillable = ['title'];
+
+    public function books()
+    {
+        return $this->hasMany(ChessBook::class);
+    }
 }

@@ -8,12 +8,7 @@ const table1 = Table({
       title: "Action",
       formatter: actionFormatter,
       resizable: false,
-      width: 130,
-    },
-    {
-      title: "Key",
-      field: "key",
-      minWidth: 150,
+      width: 200,
     },
     {
       title: "Title",
@@ -25,10 +20,20 @@ const table1 = Table({
 
 function actionFormatter(cell) {
   const { id = 0 } = cell.getData();
-  return actionComponent({
-    edit: true,
-    editRoute: `/admin/books/types/${id}/edit`,
-    delete: true,
-    delRoute: `/admin/books/types/${id}/destroy`,
-  });
+  const parent = document.createElement("div");
+  parent.setAttribute("class", "flex gap-2");
+  parent.appendChild(
+    actionComponent({
+      edit: true,
+      editRoute: `/admin/books/types/${id}/edit`,
+      delete: true,
+      delRoute: `/admin/books/types/${id}/destroy`,
+    }),
+  );
+  const btn = document.createElement("a");
+  btn.setAttribute("class", "button button-yellow button-xs");
+  btn.innerText = "View Books";
+  btn.href = `/admin/books?type_id=${id}`;
+  parent.appendChild(btn);
+  return parent;
 }

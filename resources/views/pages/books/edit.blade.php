@@ -11,12 +11,15 @@
       <section class="form-grid-3 mb-4">
         <x-textbox id="name" label="Name" name="name" value="{{ old('name', $book->name) }}" error="{{ $errors->first('name') }}" />
         <div>
-          <label for="type" class="form-label">Book Type</label>
-          <select id="" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <label for="type_id" class="form-label">Book Type</label>
+          <select id="" name="type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             @foreach($types as $type)
-            <option value="{{ $type }}" {{ old('type', $book->type) === $type ? "selected" : "" }}>{{ $type }}</option>
+            <option value="{{ $type->id }}" {{ old('type_id', $book->book_type->id) === $type->id ? "selected" : "" }}>{{ $type->title }}</option>
             @endforeach
           </select>
+          @if($error = $errors->first('type_id'))
+          <p class="error-text">{{ $error }}</p>
+          @endif
         </div>
         <x-file-input id="image" accept="image/jpg, image/jpeg, image/png" label="Image" name="image" error="{{ $errors->first('image') }}" />
         <div>

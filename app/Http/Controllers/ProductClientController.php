@@ -10,6 +10,7 @@ class ProductClientController extends Controller
     public function index()
     {
         // here product client
+        return view("errors.dev");
         return view("pages.product client.index");
     }
 

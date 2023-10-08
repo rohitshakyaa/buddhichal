@@ -108,6 +108,7 @@ class TournamentController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        return view("errors.dev");
         $tournament = Tournament::findOrFail($id);
         $request->validate([
             'register' => 'required',
