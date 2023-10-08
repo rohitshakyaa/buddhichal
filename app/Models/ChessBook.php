@@ -13,6 +13,6 @@ class ChessBook extends Model
 
     public function book_type()
     {
-        return $this->belongsTo(Book_type::class);
+        return $this->belongsTo(BookType::class);
     }
 }

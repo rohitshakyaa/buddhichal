@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\Constant;
+use App\Models\BookType;
 use App\Models\ChessBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,24 +21,25 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('pages.books.create', ["types" => Constant::$bookTypes]);
+        $types = BookType::select(["id", "title"])->get();
+        return view('pages.books.create', compact('types'));
     }
 
     public function store(Request $request)
     {
+        Log::info('parameters for adding chess book', $request->all());
         $request->validate([
             'name' => 'required',
-            'type' => ['required', Rule::in(Constant::$bookTypes)],
+            'type_id' => 'required|exists:book_types,id',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:3062',
             'book_file' => 'required|mimes:pdf|max:3062',
         ]);
 
         DB::beginTransaction();
         try {
-            Log::info('parameters for adding chess book', $request->all());
             $chessBook = new ChessBook;
             $chessBook->name = $request->name;
-            $chessBook->type = $request->type;
+            $chessBook->book_type_id = $request->type_id;
             $chessBook->image = "";
             $chessBook->book_file = "";
             $chessBook->save();
@@ -67,26 +69,27 @@ class BookController extends Controller
         $book = ChessBook::findOrFail($id);
         $book->image = url($book->image);
         $book->book_file = url($book->book_file);
-        $types = Constant::$bookTypes;
+        $types = BookType::select(["id", "title"])->get();
         return view('pages.books.edit', compact('book', 'types'));
     }
 
 
     public function update(Request $request, $id)
     {
+        Log::info('parameters for updating chess book', $request->all());
         $chessBook = ChessBook::findOrFail($id);
         $request->validate([
             'name' => 'required',
-            'type' => ['required', Rule::in(Constant::$bookTypes)],
+            'type_id' => 'required|exists:book_types,id',
             'image' => 'image|mimes:jpg,jpeg,png|max:3062',
             'book_file' => 'mimes:pdf|max:3062',
         ]);
 
+
         DB::beginTransaction();
         try {
-            Log::info('parameters for updating chess book', $request->all());
             $chessBook->name = $request->name;
-            $chessBook->type = $request->type;
+            $chessBook->book_type_id = $request->type_id;
             $chessBook->save();
 
             if ($request->hasFile('image')) {
@@ -99,17 +102,14 @@ class BookController extends Controller
                 $chessBook->book_file = $this->storeBookFile($chessBook->id, $request->file('book_file'));
             }
             $chessBook->save();
-<<<<<<< HEAD
             Log::info("Data updated for chess books with values: ", $chessBook->toArray());
-=======
-            Log::info("Data saved for chessbooks with values: ", $chessBook->toArray());
->>>>>>> 737a96a889f8d51b71db15d5a042e4e84fcaa509
             DB::commit();
-            return redirect(route('bookIndex'))->with('success', 'ChessBook updated successfully');
+            return redirect(route('bookIndex'))->with('success', 'Chess Book updated successfully');
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e);
             return back()
+                ->withInput($request->input())
                 ->with('danger', 'something went wrong');
         }
     }

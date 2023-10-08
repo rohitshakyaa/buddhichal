@@ -12,11 +12,13 @@ class ProductController extends Controller
 
     public function index()
     {
+        return view("errors.dev");
         return view("pages.product.index");
     }
 
     public function create()
     {
+        return view("errors.dev");
         return view("pages.product.create");
     }
 

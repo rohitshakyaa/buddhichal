@@ -11,7 +11,7 @@
       <section class="form-grid-3 mb-4">
         <x-textbox id="caption" label="Caption" name="caption" value="{{ old('caption') }}" error="{{ $errors->first('caption') }}" />
         <x-textbox id="link" label="Link" name="link" value="{{ old('link') }}" error="{{ $errors->first('link') }}" />
-        <x-file-input id="image" label="Image" name="image" error="{{ $errors->first('image') }}" />
+        <x-file-input id="image" accept="image/png, image/jpeg, image/jpg" label="Image" name="image" error="{{ $errors->first('image') }}" />
       </section>
       <div id="imageDiv" class="mb-4 hidden">
         <label class="form-label">Preview Image: </label>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use PgSql\Lob;
 use Throwable;
@@ -91,7 +92,26 @@ class NcaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dd($request->all());
+        $nca = Nca::findOrFail($id);
+        $validatedData = request()->validate([
+            'post' => 'required',
+            'position' => 'required',
+            'name' => 'required',
+            'phone_number' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required|email'
+        ]);
+        $nca->post = $validatedData['post'];
+        $nca->position = $validatedData['position'];
+        $nca->name = $validatedData['name'];
+        $nca->phone_number = $validatedData['phone_number'];
+        $nca->email = $validatedData['email'];
+        if ($request->hasFile('image')) {
+            File::delete(public_path($nca->image));
+            $nca->image = $this->storeNcaImage($nca->id, $request->file('image'));
+        }
+        $nca->save();
+        return redirect(route('ncaIndex'))->with('success', 'Nca Member updated successfully');
     }
 
     /**
@@ -99,7 +119,9 @@ class NcaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $nca = Nca::findOrFail($id);
+        $nca->delete();
+        return redirect(route('ncaIndex'))->with('success', "Nca Member deleted successfully");
     }
 
     private function storeNcaImage($ncaId, $imageFile)

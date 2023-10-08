@@ -12,9 +12,9 @@ class BannerApiController extends Controller
     public function index()
     {
         $banners = Banner::select("id", "caption", "link", "image")->get();
-        foreach ($banners as $banner) {
+        $banners->each(function ($banner) {
             $banner->image = url($banner->image);
-        }
+        });
         return ApiResponseHelper::successResponseWithData($banners);
     }
 }
