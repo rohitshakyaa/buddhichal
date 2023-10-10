@@ -8,6 +8,7 @@ class DashboardController extends Controller
 {
     public function dashboardPage()
     {
+        return view("errors.dev");
         return view("pages.dashboard");
     }
 }

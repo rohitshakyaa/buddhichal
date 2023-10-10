@@ -1,20 +1,17 @@
 <?php
 
-use App\Http\Controllers\Api\BannerApiAdminController;
-use App\Http\Controllers\Api\NcaApiAdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NcaController;
+use App\Http\Controllers\ProductClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamChampionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\TournamentPlayerController;
-use App\Models\book;
-use App\Models\Tournament;
-use App\Models\TournamentPlayer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,13 +33,15 @@ Route::get("/", function () {
 Route::get('/book/{id}', [BookController::class, 'getBookByType']);
 
 
-Route::get("/admin", [DashboardController::class, 'dashboardPage']);
-Route::get("/admin/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
-Route::get("/admin/login", [UserController::class, 'loginPage'])->name('login');
+Route::get("/admin/login", [UserController::class, 'loginPage'])->name('loginPage');
 Route::post("/admin/login", [UserController::class, 'login'])->name('login');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
+  Route::get("/", function () {
+    return redirect(route('dashboard'));
+  });
+  Route::get("/dashboard", [DashboardController::class, 'dashboardPage'])->name('dashboard');
 
   Route::get("tournaments", [TournamentController::class, 'index'])->name('tournamentIndex');
   Route::get("tournaments/create", [TournamentController::class, 'create'])->name('tournamentCreate');
@@ -81,6 +80,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::post("team-champions/{id}/update", [TeamChampionController::class, 'update'])->name('teamChampionUpdate');
   Route::post("team-champions/{id}/destroy", [TeamChampionController::class, 'destroy'])->name('teamChampionDestroy');
 
+  Route::get("books/types", [BookTypeController::class, 'index'])->name('bookTypeIndex');
+  Route::get("books/types/create", [BookTypeController::class, 'create'])->name('bookTypeCreate');
+  Route::post("books/types/store", [BookTypeController::class, 'store'])->name('bookTypeStore');
+  Route::get("books/types/{id}/edit/", [BookTypeController::class, 'edit'])->name('bookTypeEdit');
+  Route::post("books/types/{id}/update", [BookTypeController::class, 'update'])->name('bookTypeUpdate');
+  Route::post("books/types/{id}/destroy", [BookTypeController::class, 'destroy'])->name('bookTypeDestroy');
+
   Route::get("books", [BookController::class, 'index'])->name('bookIndex');
   Route::get("books/create", [BookController::class, 'create'])->name('bookCreate');
   Route::post("books/store", [BookController::class, 'store'])->name('bookStore');
@@ -101,4 +107,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("products/{id}/edit", [ProductController::class, 'edit'])->name('productEdit');
   Route::post("products/{id}/update", [ProductController::class, 'update'])->name('productUpdate');
   Route::post("products/{id}/destroy", [ProductController::class, 'destroy'])->name('productDestroy');
+
+  Route::get("products/clients", [ProductClientController::class, 'index'])->name('productClientIndex');
+  Route::get("products/clients/{id}/destroy", [ProductClientController::class, 'destroy'])->name('productClientDestroy');
+
+  Route::get("change-password", [UserController::class, 'changePasswordPage'])->name('changePasswordPage');
+  Route::post("change-password", [UserController::class, 'changePassword'])->name('changePassword');
+  Route::get("logout", [UserController::class, 'logout'])->name('logout');
 });

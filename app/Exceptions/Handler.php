@@ -2,7 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Http\Helpers\ApiResponseHelper;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +32,29 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api/*') or $request->expectsJson()) {
+            if ($e instanceof AuthenticationException) {
+                return ApiResponseHelper::unauthorizedResponse("Unauthenticated");
+            }
+
+            if ($e instanceof NotFoundHttpException) {
+                return ApiResponseHelper::notFoundResponse();
+            }
+
+            if ($e instanceof MethodNotAllowedHttpException) {
+                return ApiResponseHelper::methodNotAllowedResponse();
+            }
+
+            if ($e instanceof ValidationException) {
+                Log::error($e->errors());
+                return ApiResponseHelper::validationErrorResponse($e->errors());
+            }
+        }
+
+        return parent::render($request, $e);
     }
 }
