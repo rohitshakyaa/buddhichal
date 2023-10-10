@@ -5,7 +5,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
 
 const table1 = Table({
-  tableId: "tournament-table", apiUrl: `/api/web/admin/tournaments${id ? `?id=${id}` : ""}`, columns: [
+  tableId: "product-table", apiUrl: `/api/web/admin/products${id ? `?id=${id}` : ""}`, columns: [
 
     {
       title: "Action",
@@ -14,42 +14,19 @@ const table1 = Table({
       width: 200,
     },
     {
+      title: "Priority",
+      field: "priority",
+      minWidth: 150,
+    },
+    {
       title: "Title",
       field: "title",
       minWidth: 150,
     },
     {
-      title: "Contact Number",
-      field: "number",
-      minWidth: 150,
-    },
-    {
-      title: "Start Date",
-      field: "start_date",
+      title: "Price",
+      field: "price",
       minWidth: 120,
-    },
-    {
-      title: "End Date",
-      field: "end_date",
-      minWidth: 120,
-    },
-    {
-      title: "Total Prize (Rs.)",
-      field: "total_prize",
-      minWidth: 140,
-      hozAlign: "right"
-    },
-    {
-      title: "Register",
-      field: "register",
-      formatter: (cell) => cell.getValue() ? "Yes" : "No",
-      minWidth: 100,
-    },
-    {
-      title: "Description",
-      field: "description",
-      formatter: "textarea",
-      minWidth: 130,
     },
     {
       title: "Images",
@@ -66,20 +43,18 @@ function actionFormatter(cell) {
   parent.setAttribute("class", "flex gap-2");
   parent.appendChild(actionComponent({
     edit: true,
-    editRoute: `/admin/tournaments/${id}/edit`,
+    editRoute: `/admin/products/${id}/edit`,
     delete: true,
-    delRoute: `/admin/tournaments/${id}/destroy`,
+    delRoute: `/admin/products/${id}/destroy`,
   }));
   const btn = document.createElement("a");
   btn.setAttribute("class", "button button-yellow button-xs");
-  btn.innerText = "View Players";
-  btn.href = `/admin/tournaments/players?tournament_id=${id}`;
+  btn.innerText = "View Clients";
+  btn.href = `/admin/products/clients?product_id=${id}`;
   parent.appendChild(btn);
   return parent;
 
 }
-
-
 
 function imagesFormatter(cell) {
   const images = cell.getValue();

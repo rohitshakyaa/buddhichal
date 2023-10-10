@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('address');
             $table->integer('fide_id');
-            $table->timestamp('dob');
+            $table->date('dob');
             $table->string('fide_rating');
             $table->string('email')->unique();
             $table->timestamps();

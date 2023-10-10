@@ -16,7 +16,12 @@ class ChampionApiAdminController extends Controller
                 $champion->image = url($champion->image);
             }
         } else {
-            $champions = Champion::where('gender', $gender);
+            $champions = Champion::where('gender', $gender)
+                ->select('id', 'name', 'from', 'game_at', 'gender', 'image', 'date')
+                ->get();
+            foreach ($champions as $champion) {
+                $champion->image = url($champion->image);
+            }
         }
         return ApiResponseHelper::successResponseWithData($champions);
     }

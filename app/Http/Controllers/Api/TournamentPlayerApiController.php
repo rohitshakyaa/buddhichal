@@ -10,9 +10,16 @@ use Illuminate\Http\Request;
 
 class TournamentPlayerApiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tournamentPlayers = TournamentPlayer::select('tournament_id', 'name', 'phone_number', 'address', 'fide_id', 'email')->get();
+        if ($tournamentId = $request->get('tournament_id')) {
+            $tournamentPlayers = TournamentPlayer::where('tournament_id', $tournamentId)->get();
+        } else {
+            $tournamentPlayers = TournamentPlayer::all();
+        }
+        foreach ($tournamentPlayers as $tournamentPlayer) {
+            $tournamentPlayer->tournament_title = $tournamentPlayer->tournament->title;
+        }
         return ApiResponseHelper::successResponseWithData($tournamentPlayers);
     }
 
