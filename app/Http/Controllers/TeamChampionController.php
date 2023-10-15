@@ -94,6 +94,7 @@ class TeamChampionController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $teamChampion = TeamChampion::findOrFail($id);
         if ($teamChampion) {
 
@@ -175,7 +176,7 @@ class TeamChampionController extends Controller
     {
         $imagePath = "images/team-champions";
         $path = public_path($imagePath);
-        $imageName = $teamChampionId . '-' . time() . '.' . $imageFile->extension();
+        $imageName = $teamChampionId . '-' . time() . '.' . $imageFile->getClientOriginalName() . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
         return $imagePath . '/' . $imageName;
     }

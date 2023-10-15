@@ -60,7 +60,8 @@ class TournamentPlayerController extends Controller
             return view('pages.tournament.playerIndex', compact('tournamentPlayer'));
         } else {
             Log::error("tournamentPlayer not found for id: $id");
-            return back()->with('danger', 'tournamentPlayer not found.');
+            return back()
+                ->with('danger', 'tournamentPlayer not found.');
         }
     }
 

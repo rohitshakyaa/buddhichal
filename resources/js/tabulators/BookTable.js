@@ -21,6 +21,7 @@ const table1 = Table({
     {
       title: "Type",
       field: "type",
+      formatter: bookTypeLinkFormatter,
       minWidth: 120,
     },
     {
@@ -46,4 +47,16 @@ function actionFormatter(cell) {
     delete: true,
     delRoute: `/admin/books/${id}/destroy`,
   });
+}
+
+function bookTypeLinkFormatter(cell) {
+  const { book_type_id = 0 } = cell.getData();
+  if (cell.getValue()) {
+    const imgTag = document.createElement('a');
+    imgTag.href = `/admin/books/types?id=${book_type_id}`;
+    imgTag.innerText = cell.getValue();
+    imgTag.setAttribute("class", "underline text-blue-500 hover:text-blue-600 ")
+    return imgTag;
+  }
+  return "";
 }
