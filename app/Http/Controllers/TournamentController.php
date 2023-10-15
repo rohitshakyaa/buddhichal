@@ -143,15 +143,15 @@ class TournamentController extends Controller
                     ->with('danger', "You can't update with empty images");
             }
 
-            if($request->hasFile('images'))
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeTournamentImage($tournament->id, $image);
-                TournamentImage::create([
-                    'tournament_id' => $tournament->id,
-                    'image_path' => $imagePath
-                ]);
-                Log::info("Tournament images has been updated.");
-            }
+            if ($request->hasFile('images'))
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $this->storeTournamentImage($tournament->id, $image);
+                    TournamentImage::create([
+                        'tournament_id' => $tournament->id,
+                        'image_path' => $imagePath
+                    ]);
+                    Log::info("Tournament images has been updated.");
+                }
 
             if (count($removedImageIds)) {
                 foreach ($removedImageIds as $imageId) {
@@ -185,11 +185,12 @@ class TournamentController extends Controller
         DB::beginTransaction();
         try {
             $tournament = Tournament::findOrFail($id);
+            if ($tournament) {
+                foreach ($tournament->tournament_images as $image) {
+                    File::delete(public_path($image->image_path));
+                }
+            }
             $tournament->delete();
-            DB::table('tournament_images')
-                ->where('tournament_id', $id)
-                ->delete();
-
             DB::commit();
             return redirect(route('tournamentIndex'))->with('success', 'Tournament and its images have been deleted.');
         } catch (\Exception $e) {

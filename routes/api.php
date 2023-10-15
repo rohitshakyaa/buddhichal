@@ -50,6 +50,6 @@ Route::prefix('web/admin')->name('.')->group(function () {
     Route::get("tournaments/players", [TournamentPlayerApiController::class, 'index']);
     Route::get("books", [ChessBookApiController::class, 'index']);
     Route::get("books/types", [BookTypeApiController::class, 'index']);
-    Route::get("products", [ProductApiController::class, 'index']);
+    Route::get("products", [ProductApiController::class, 'getDataForDataTable']);
     Route::get("products/clients", [ProductClientApiController::class, 'index']);
 });
