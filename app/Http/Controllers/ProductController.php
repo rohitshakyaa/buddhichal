@@ -44,8 +44,8 @@ class ProductController extends Controller
             $product->priority = $request->priority;
             $product->save();
 
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeProductImage($product->id, $image);
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $this->storeProductImage($product->id, $image, $index);
                 $productImage = ProductImage::create([
                     'product_id' => $product->id,
                     'image_path' => $imagePath
@@ -108,8 +108,8 @@ class ProductController extends Controller
                 }
 
                 if ($request->hasFile('images'))
-                    foreach ($request->file('images') as $image) {
-                        $imagePath = $this->storeProductImage($product->id, $image);
+                    foreach ($request->file('images') as $index => $image) {
+                        $imagePath = $this->storeProductImage($product->id, $image, $index);
                         ProductImage::create([
                             'product_id' => $product->id,
                             'image_path' => $imagePath
@@ -156,11 +156,11 @@ class ProductController extends Controller
 
 
 
-    private function storeProductImage($productId, $imageFile)
+    private function storeProductImage($productId, $imageFile, $index)
     {
         $imagePath = "images/products";
         $path = public_path($imagePath);
-        $imageName = $productId . '-' . time() . '.' . $imageFile->getClientOriginalName() . '.' . $imageFile->extension();
+        $imageName = $productId . '-' . time() . '.' . $index . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
         return $imagePath . '/' . $imageName;
     }
