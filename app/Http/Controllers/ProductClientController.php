@@ -11,7 +11,6 @@ class ProductClientController extends Controller
     public function index()
     {
         // here product client
-        return view("errors.dev");
         return view("pages.product client.index");
     }
 
@@ -77,7 +76,7 @@ class ProductClientController extends Controller
         if ($client) {
             $client->delete();
             Log::info('client deleted successfully');
-            return redirect(route('pages.product client.index'))
+            return redirect(route('productClientIndex'))
                 ->with('success', 'client deleted successfully');
         } else {
             Log::error("client not found for id: $id");

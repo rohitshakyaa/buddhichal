@@ -13,10 +13,9 @@ class ProductClientApiController extends Controller
 {
   public function index(Request $request)
   {
-    //if product client 
-    $productClient = ProductClient::select('id', 'product_id', 'name', 'phone_number', 'address')
-      ->orderBy("id", "asc")
-      ->get();
+    // $productClient = ProductClient::select('id', 'product_id', 'name', 'phone_number', 'address')
+    //   ->orderBy("id", "asc")
+    //   ->get();
 
     if ($productId = $request->get('product_id')) {
       $clients = ProductClient::where('product_id', $productId)->get();
@@ -24,10 +23,10 @@ class ProductClientApiController extends Controller
       $clients = ProductClient::all();
     }
     foreach ($clients as $client) {
-      $client->client_title = $client->product->title;
+      $client->productName = $client->product->title;
     }
 
-    return ApiResponseHelper::successResponseWithData($productClient);
+    return ApiResponseHelper::successResponseWithData($clients);
   }
 
   public function store(Request $request, Product $product)

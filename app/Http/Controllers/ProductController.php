@@ -17,24 +17,24 @@ class ProductController extends Controller
 
     public function index()
     {
-        return view("errors.dev");
         return view("pages.product.index");
     }
 
     public function create()
     {
-        return view("errors.dev");
-        return view("pages.product.create");
+         return view("pages.product.create");
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->all([
+        $validatedData = $request->validate([
             'priority' => 'required|unique:products,priority',
             'title' => 'required|max:255',
+            'images' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'price' => 'required'
         ]);
+        // dd($request->file('images'));
         DB::beginTransaction();
         try {
             Log::info("parameters for storing product.", $request->all());
@@ -85,60 +85,60 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         if ($product) {
             $validatedData = request()->validate([
-                'priority' => 'required|unique:products,priority',
+                'priority' => 'required',
                 'title' => 'required|max:255',
                 'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'price' => 'required'
             ]);
-        DB::beginTransaction();
-        try {
-            Log::info("parameter for updating product", $request->all());
+            DB::beginTransaction();
+            try {
+                Log::info("parameter for updating product", $request->all());
 
-            $product->priority = $request->priority;
-            $product->title = $request->title;
-            $product->price = $request->price;
-            $product->save();
+                $product->priority = $request->priority;
+                $product->title = $request->title;
+                $product->price = $request->price;
+                $product->save();
 
-            $imageCount = count($product->product_images);
-            $removedImageIds = isset($request->removedImageIds) ? $request->removedImageIds : [];
-            if (count($removedImageIds) == $imageCount && !$request->images) {
+                $imageCount = count($product->product_images);
+                $removedImageIds = isset($request->removedImageIds) ? $request->removedImageIds : [];
+                if (count($removedImageIds) == $imageCount && !$request->images) {
+                    return back()
+                        ->withInput($request->input())
+                        ->with('danger', "You can't update with empty images");
+                }
+
+                if ($request->hasFile('images'))
+                    foreach ($request->file('images') as $image) {
+                        $imagePath = $this->storeProductImage($product->id, $image);
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_path' => $imagePath
+                        ]);
+                        Log::info("product images has been updated.");
+                    }
+
+                if (count($removedImageIds)) {
+                    foreach ($removedImageIds as $imageId) {
+                        $image = ProductImage::find($imageId);
+                        if (!$image) {
+                            return back()
+                                ->withInput($request->input())
+                                ->with('danger', 'Image not found while removing');
+                        }
+                        File::delete(public_path($image->image_path));
+                        $image->delete();
+                    }
+                }
+                Log::info("Data for products has been updated successfully", $product->toArray());
+                DB::commit();
+                return redirect(route('productIndex'))->with('success', 'Product updated successfully');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error($e);
                 return back()
                     ->withInput($request->input())
-                    ->with('danger', "You can't update with empty images");
+                    ->with('danger', "Something went wrong");
             }
-
-            if($request->hasFile('images'))
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeProductImage($product->id, $image);
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => $imagePath
-                ]);
-                Log::info("product images has been updated.");
-            }
-
-            if (count($removedImageIds)) {
-                foreach ($removedImageIds as $imageId) {
-                    $image = ProductImage::find($imageId);
-                    if (!$image) {
-                        return back()
-                            ->withInput($request->input())
-                            ->with('danger', 'Image not found while removing');
-                    }
-                    File::delete(public_path($image->image_path));
-                    $image->delete();
-                }
-            }
-            Log::info("Data for products has been updated successfully", $product->toArray());
-            DB::commit();
-            return redirect(route('productIndex'))->with('success', 'Product updated successfully');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e);
-            return back()
-                ->withInput($request->input())
-                ->with('danger', "Something went wrong");
-        }
         }
     }
 
@@ -153,8 +153,8 @@ class ProductController extends Controller
             ->with('success', 'product and its images have been deleted.');
     }
 
-    
-    
+
+
 
     private function storeProductImage($productId, $imageFile)
     {

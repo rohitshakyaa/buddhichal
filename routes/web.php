@@ -113,7 +113,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::get("products/clients/{id}/store", [ProductClientController::class, 'store'])->name('productClientStore');
   Route::get("products/clients/{id}/edit", [ProductClientController::class, 'edit'])->name('productClientEdit');
   Route::get("products/clients/{id}/{productId}/update", [ProductClientController::class, 'update'])->name('productClientUpdate');
-  Route::get("products/clients/{id}/destroy", [ProductClientController::class, 'destroy'])->name('productClientDestroy');
+  Route::post("products/clients/{id}/destroy", [ProductClientController::class, 'destroy'])->name('productClientDestroy');
 
   Route::get("change-password", [UserController::class, 'changePasswordPage'])->name('changePasswordPage');
   Route::post("change-password", [UserController::class, 'changePassword'])->name('changePassword');

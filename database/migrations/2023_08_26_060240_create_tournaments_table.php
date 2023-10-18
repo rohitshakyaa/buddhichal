@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tournaments', function (Blueprint $table) {
             $table->id();
             $table->boolean('register');
-            $table->integer('number');
+            $table->string('number');
             $table->string('title');
             $table->text('description');
             $table->date('start_date');

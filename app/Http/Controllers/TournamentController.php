@@ -144,8 +144,8 @@ class TournamentController extends Controller
             }
 
             if ($request->hasFile('images'))
-                foreach ($request->file('images') as $image) {
-                    $imagePath = $this->storeTournamentImage($tournament->id, $image);
+                foreach ($request->file('images') as $index => $image) {
+                    $imagePath = $this->storeTournamentImage($tournament->id, $image, $index);
                     TournamentImage::create([
                         'tournament_id' => $tournament->id,
                         'image_path' => $imagePath
@@ -200,11 +200,11 @@ class TournamentController extends Controller
         }
     }
 
-    private function storeTournamentImage($tournamentId, $imageFile)
+    private function storeTournamentImage($tournamentId, $imageFile, int $index = 0)
     {
         $imagePath = "images/tournaments";
         $path = public_path($imagePath);
-        $imageName = $tournamentId . '-' . time() . '.' . $imageFile->getClientOriginalName() . '.' . $imageFile->extension();
+        $imageName = $tournamentId . '-' . time() . '.' . $index . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
         return $imagePath . '/' . $imageName;
     }

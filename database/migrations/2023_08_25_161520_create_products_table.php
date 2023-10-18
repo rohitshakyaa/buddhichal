@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('priority');
             $table->string('title');
-            $table->string('image');
             $table->integer('price');
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
