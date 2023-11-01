@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tournaments', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->boolean('register');
-            $table->string('number');
-            $table->string('title');
-            $table->text('description');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('total_prize');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('image_path');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tournaments');
+        Schema::dropIfExists('product_images');
     }
 };

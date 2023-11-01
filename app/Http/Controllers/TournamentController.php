@@ -7,6 +7,7 @@ use App\Models\Tournament;
 use App\Models\TournamentImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class TournamentController extends Controller
@@ -61,15 +62,15 @@ class TournamentController extends Controller
 
             $images = [];
 
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeTournamentImage($tournament->id, $image);
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $this->storeTournamentImage($tournament->id, $image, $index);
                 TournamentImage::create([
                     'tournament_id' => $tournament->id,
                     'image_path' => $imagePath
                 ]);
             }
             DB::commit();
-            return redirect(route('tournamentIndex'));
+            return redirect(route('tournamentIndex'))->with('success', 'Tournament created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);
@@ -108,7 +109,8 @@ class TournamentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return view("errors.dev");
+        // return view("errors.dev");
+        // dd('hello');
         $tournament = Tournament::findOrFail($id);
         $request->validate([
             'register' => 'required',
@@ -122,7 +124,7 @@ class TournamentController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info("parameter for storing tournament", $request->all());
+            Log::info("parameter for updating tournament", $request->all());
 
             $tournament->register = $request->register;
             $tournament->number = $request->number;
@@ -133,14 +135,37 @@ class TournamentController extends Controller
             $tournament->total_prize = $request->total_prize;
             $tournament->save();
 
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeTournamentImage($tournament->id, $image);
-                $tournamentImage = TournamentImage::create([
-                    'tournament_id' => $tournament->id,
-                    'image_path' => $imagePath
-                ]);
-                Log::info("Tournament images has been added.", $tournamentImage->toArray());
+            $imageCount = count($tournament->tournament_images);
+            $removedImageIds = isset($request->removedImageIds) ? $request->removedImageIds : [];
+            if (count($removedImageIds) == $imageCount && !$request->images) {
+                return back()
+                    ->withInput($request->input())
+                    ->with('danger', "You can't update with empty images");
             }
+
+            if ($request->hasFile('images'))
+                foreach ($request->file('images') as $index => $image) {
+                    $imagePath = $this->storeTournamentImage($tournament->id, $image, $index);
+                    TournamentImage::create([
+                        'tournament_id' => $tournament->id,
+                        'image_path' => $imagePath
+                    ]);
+                    Log::info("Tournament images has been updated.");
+                }
+
+            if (count($removedImageIds)) {
+                foreach ($removedImageIds as $imageId) {
+                    $image = TournamentImage::find($imageId);
+                    if (!$image) {
+                        return back()
+                            ->withInput($request->input())
+                            ->with('danger', 'Image not found while removing');
+                    }
+                    File::delete(public_path($image->image_path));
+                    $image->delete();
+                }
+            }
+
             DB::commit();
             return redirect(route('tournamentIndex'))->with('success', 'Tournament updated successfully');
         } catch (\Exception $e) {
@@ -160,11 +185,12 @@ class TournamentController extends Controller
         DB::beginTransaction();
         try {
             $tournament = Tournament::findOrFail($id);
+            if ($tournament) {
+                foreach ($tournament->tournament_images as $image) {
+                    File::delete(public_path($image->image_path));
+                }
+            }
             $tournament->delete();
-            DB::table('tournament_images')
-                ->where('tournament_id', $id)
-                ->delete();
-
             DB::commit();
             return redirect(route('tournamentIndex'))->with('success', 'Tournament and its images have been deleted.');
         } catch (\Exception $e) {
@@ -174,11 +200,11 @@ class TournamentController extends Controller
         }
     }
 
-    private function storeTournamentImage($tournamentId, $imageFile)
+    private function storeTournamentImage($tournamentId, $imageFile, int $index = 0)
     {
         $imagePath = "images/tournaments";
         $path = public_path($imagePath);
-        $imageName = $tournamentId . '-' . time() . '.' . $imageFile->extension();
+        $imageName = $tournamentId . '-' . time() . '.' . $index . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
         return $imagePath . '/' . $imageName;
     }

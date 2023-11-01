@@ -59,7 +59,7 @@ class NcaController extends Controller
             Log::info("Data saved for ncas with values: ", $nca->toArray());
 
             DB::commit();
-            return redirect(route('ncaIndex'))->with('nca has been created');
+            return redirect(route('ncaIndex'))->with('success', 'Nca Member has been added successfully');
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e);

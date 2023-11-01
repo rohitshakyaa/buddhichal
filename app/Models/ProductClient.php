@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product_client extends Model
+class ProductClient extends Model
 {
     use HasFactory;
 
     protected $guarded = [''];
 
 
-    public function product_clients()
+    public function product()
     {
-        return $this->hasMany(Product_client::class);
+        return $this->belongsTo(Product::class);
     }
 }

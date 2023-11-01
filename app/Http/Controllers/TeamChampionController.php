@@ -51,8 +51,8 @@ class TeamChampionController extends Controller
 
             Log::info("team champion has been added", $teamChampion->toArray());
 
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image);
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image, $index);
                 $teamChampionImage = TeamChampionImage::create([
                     'team_champion_id' => $teamChampion->id,
                     'image_path' => $imagePath
@@ -94,6 +94,7 @@ class TeamChampionController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $teamChampion = TeamChampion::findOrFail($id);
         if ($teamChampion) {
 
@@ -126,8 +127,8 @@ class TeamChampionController extends Controller
                 Log::info("team champion has been updated", $teamChampion->toArray());
 
                 if ($request->hasFile('images')) {
-                    foreach ($request->file('images') as $image) {
-                        $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image);
+                    foreach ($request->file('images') as $index => $image) {
+                        $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image, $index);
                         TeamChampionImage::create([
                             'team_champion_id' => $teamChampion->id,
                             'image_path' => $imagePath
@@ -171,11 +172,11 @@ class TeamChampionController extends Controller
             ->with('success', 'TeamChampion and its images have been deleted.');
     }
 
-    private function storeTeamChampionImage($teamChampionId, $imageFile)
+    private function storeTeamChampionImage($teamChampionId, $imageFile, int $index = 0)
     {
         $imagePath = "images/team-champions";
         $path = public_path($imagePath);
-        $imageName = $teamChampionId . '-' . time() . '.' . $imageFile->extension();
+        $imageName = $teamChampionId . '-' . time() . '.' . $index . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
         return $imagePath . '/' . $imageName;
     }

@@ -56,7 +56,6 @@
     const images = <?php echo json_encode($tournament->images); ?>;
     const currentImageContainer = document.getElementById("currentImages");
     images.forEach((image, index) => {
-      console.log(image);
       const imageDiv = document.createElement('div');
       imageDiv.setAttribute("class", "relative");
       imageDiv.id = `currentImage${index}`;

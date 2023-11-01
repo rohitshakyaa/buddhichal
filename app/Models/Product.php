@@ -13,6 +13,11 @@ class Product extends Model
 
     public function product_client()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(ProductClient::class);
+    }
+
+    public function product_images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }
