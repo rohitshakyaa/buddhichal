@@ -9,8 +9,8 @@
     <form method="POST" id="form" action="{{ route('productUpdate', $product->id) }}" enctype="multipart/form-data">
       @csrf
       <section class="form-grid-3 mb-4">
-        <x-textbox id="priority" type="number" label="Start Date" name="priority" value="{{ old('priority', $product->priority) }}" error="{{ $errors->first('priority') }}" />
-        <x-textbox id="title" label="Title" name="title" value="{{ old('title', $product->title) }}" error="{{ $errors->first('title') }}" />
+        <x-textbox id="priority" type="number" label="Priority" name="priority" value="{{ old('priority', $product->priority) }}" error="{{ $errors->first('priority') }}" />
+        <x-textbox id="title" label="Title" name="Title" value="{{ old('title', $product->title) }}" error="{{ $errors->first('title') }}" />
         <x-textbox id="price" type="number" label="Price" name="price" value="{{ old('price', $product->price) }}" error="{{ $errors->first('price') }}" />
       </section>
       <div class="mb-4">

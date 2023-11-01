@@ -62,15 +62,15 @@ class TournamentController extends Controller
 
             $images = [];
 
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->storeTournamentImage($tournament->id, $image);
+            foreach ($request->file('images') as $index => $image) {
+                $imagePath = $this->storeTournamentImage($tournament->id, $image, $index);
                 TournamentImage::create([
                     'tournament_id' => $tournament->id,
                     'image_path' => $imagePath
                 ]);
             }
             DB::commit();
-            return redirect(route('tournamentIndex'));
+            return redirect(route('tournamentIndex'))->with('success', 'Tournament created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);
