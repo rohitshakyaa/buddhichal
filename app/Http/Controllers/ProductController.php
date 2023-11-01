@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use stdClass;
 use Throwable;
 
@@ -22,7 +23,7 @@ class ProductController extends Controller
 
     public function create()
     {
-         return view("pages.product.create");
+        return view("pages.product.create");
     }
 
     public function store(Request $request)
@@ -85,7 +86,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         if ($product) {
             $validatedData = request()->validate([
-                'priority' => 'required',
+                'priority' => ['required', Rule::unique('products', 'priority')->ignore($id, 'id')],
                 'title' => 'required|max:255',
                 'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                 'price' => 'required'
