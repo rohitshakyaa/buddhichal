@@ -27,6 +27,7 @@ class TeamChampionController extends Controller
 
     public function store(Request $request)
     {
+        Log::info("Parameters for storing team champions: ", $request->all());
         $request->validate([
             'priority' => 'required|integer',
             'captain_name' => 'required|max:255',
@@ -39,7 +40,6 @@ class TeamChampionController extends Controller
 
         DB::beginTransaction();
         try {
-            Log::info("parameters for team champions");
             $teamChampion = new TeamChampion;
             $teamChampion->priority = $request->priority;
             $teamChampion->title = $request->title;
@@ -49,7 +49,7 @@ class TeamChampionController extends Controller
             $teamChampion->year = $request->year;
             $teamChampion->save();
 
-            Log::info("team champion has been added", $teamChampion->toArray());
+            Log::info("Team champion has been added", $teamChampion->toArray());
 
             foreach ($request->file('images') as $index => $image) {
                 $imagePath = $this->storeTeamChampionImage($teamChampion->id, $image, $index);
@@ -88,16 +88,15 @@ class TeamChampionController extends Controller
             return view('pages.team champions.edit', compact('teamChampion'));
         } catch (\Exception $e) {
             Log::error($e);
-            return back()->with('danger', 'teamChampion not found.');
+            return back()->with('danger', 'Something went wrong while fetching team champion.');
         }
     }
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
+        Log::info("Parameters for updating team champion with $id: ", $request->all());
         $teamChampion = TeamChampion::findOrFail($id);
         if ($teamChampion) {
-
             $request->validate([
                 'priority' => 'required|integer',
                 'captain_name' => 'required|max:255',
@@ -116,7 +115,6 @@ class TeamChampionController extends Controller
 
             DB::beginTransaction();
             try {
-                Log::info("parameters for updating team champions");
                 $teamChampion->priority = $request->priority;
                 $teamChampion->captain_name = $request->captain_name;
                 $teamChampion->location = $request->location;
@@ -134,6 +132,7 @@ class TeamChampionController extends Controller
                             'image_path' => $imagePath
                         ]);
                     }
+                    Log::info("New images of team champion has been saved");
                 }
 
                 if (count($removedImageIds)) {
@@ -146,6 +145,7 @@ class TeamChampionController extends Controller
                         }
                         File::delete(public_path($image->image_path));
                         $image->delete();
+                        Log::info("Images have been removed of team champions");
                     }
                 }
                 Log::info("Data for team champions has been updated successfully", $teamChampion->toArray());
@@ -168,6 +168,7 @@ class TeamChampionController extends Controller
             File::delete(public_path($image->image_path));
         }
         $teamChampion->delete();
+        Log::info("Team champion with $id has been deleted successfully and all images have been removed");
         return redirect(route('teamChampionIndex'))
             ->with('success', 'TeamChampion and its images have been deleted.');
     }

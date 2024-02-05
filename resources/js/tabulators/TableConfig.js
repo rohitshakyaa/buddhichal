@@ -7,7 +7,7 @@ export function Table({ tableId, apiUrl, columns }) {
       ajaxConfig: "GET",
       layout: "fitColumns",
       placeholder: "No data to view",
-      columns: columns,
+      columns,
       ajaxResponse: function (url, params, response) {
         if (response?.status === "1") {
           return response.response;
@@ -20,16 +20,18 @@ export function Table({ tableId, apiUrl, columns }) {
 
 export function linkFormatter(cell) {
   if (cell.getValue()) {
-    const imgTag = document.createElement('a');
+    const imgTag = document.createElement("a");
     imgTag.href = cell.getValue();
     imgTag.target = "_blank";
     imgTag.innerHTML = cell.getValue();
-    imgTag.setAttribute("class", "underline text-blue-500 hover:text-blue-600 visited:text-blue-400")
+    imgTag.setAttribute(
+      "class",
+      "underline text-blue-500 hover:text-blue-600 visited:text-blue-400",
+    );
     return imgTag;
   }
   return "";
 }
-
 
 export function actionComponent(config) {
   const parent = document.createElement("div");
@@ -56,7 +58,7 @@ export function actionComponent(config) {
     csrfField.value = csrf;
     formEl.appendChild(csrfField);
     formEl.method = "POST";
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener("click", (e) => {
       const conf = confirm("Are you sure you want to delete this ?");
       if (conf) {
         formEl.submit();

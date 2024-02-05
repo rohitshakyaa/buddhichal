@@ -66,7 +66,10 @@ function imagesFormatter(cell) {
     imgTag.href = image.image_url;
     imgTag.target = "_blank";
     imgTag.innerHTML = image.image_path;
-    imgTag.setAttribute("class", "underline text-blue-500 hover:text-blue-600 visited:text-blue-400 text-ellipsis");
+    imgTag.setAttribute(
+      "class",
+      "underline text-blue-500 hover:text-blue-600 visited:text-blue-400 text-ellipsis",
+    );
     container.appendChild(imgTag);
   });
   return container;

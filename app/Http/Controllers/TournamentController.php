@@ -33,7 +33,7 @@ class TournamentController extends Controller
      */
     public function store(Request $request)
     {
-
+        Log::info("parameter for storing tournament", $request->all());
         $request->validate([
             'register' => 'required',
             'number' => 'required',
@@ -45,6 +45,7 @@ class TournamentController extends Controller
             "images" => "required",
             'images.*' => 'image|mimes:jpeg,png,jpg,gif'
         ]);
+
         DB::beginTransaction();
 
         try {
@@ -109,9 +110,8 @@ class TournamentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // return view("errors.dev");
-        // dd('hello');
         $tournament = Tournament::findOrFail($id);
+        Log::info("parameter for updating tournament", $request->all());
         $request->validate([
             'register' => 'required',
             'number' => 'required',
@@ -125,7 +125,6 @@ class TournamentController extends Controller
         DB::beginTransaction();
         try {
             Log::info("parameter for updating tournament", $request->all());
-
             $tournament->register = $request->register;
             $tournament->number = $request->number;
             $tournament->title = $request->title;
@@ -192,6 +191,7 @@ class TournamentController extends Controller
             }
             $tournament->delete();
             DB::commit();
+            Log::info("Tournament with $id has been deleted successfully.");
             return redirect(route('tournamentIndex'))->with('success', 'Tournament and its images have been deleted.');
         } catch (\Exception $e) {
             DB::rollBack();

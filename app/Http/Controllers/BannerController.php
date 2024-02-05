@@ -32,13 +32,13 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info("Parameters for creating banner: ", $request->all());
         $request->validate([
             'caption' => 'required|max:255',
             'link' => 'required|max:255',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:3062',
         ]);
         try {
-            Log::info("Parameters for creating banner: ", $request->all());
             DB::beginTransaction();
             $banner = new Banner;
             $banner->caption = $request->get('caption');
@@ -83,6 +83,7 @@ class BannerController extends Controller
     public function update(Request $request, string $id)
     {
         $banner = Banner::findOrFail($id);
+        Log::info("Parameters for updating the banner with banner_id: $id: ", $request->all());
         $request->validate([
             'caption' => 'required|max:255',
             'link' => 'required|max:255',
@@ -95,6 +96,7 @@ class BannerController extends Controller
             $banner->image = $this->storeBannerImage($banner->id, $request->file('image'));
         }
         $banner->save();
+        Log::info("Banner with $id updated successfully");
         return redirect(route('bannerIndex'))->with('success', 'Banner updated successfully');
     }
 
@@ -105,6 +107,7 @@ class BannerController extends Controller
     {
         $banner = Banner::findOrFail($id);
         $banner->delete();
+        Log::info("Banner with $id deleted successfully");
         return redirect(route('bannerIndex'))->with('success', "Banner deleted successfully");
     }
 
@@ -114,6 +117,7 @@ class BannerController extends Controller
         $path = public_path($imagePath);
         $imageName = $bannerId . '-' . time() . '.' . $imageFile->extension();
         $imageFile->move($path, $imageName);
+        Log::info("Image saved for banners. Image Path: $imagePath/$imageName");
         return $imagePath . '/' . $imageName;
     }
 }
