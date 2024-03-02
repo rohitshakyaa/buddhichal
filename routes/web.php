@@ -94,7 +94,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::post("books/{id}/update", [BookController::class, 'update'])->name('bookUpdate');
   Route::post("books/{id}/destroy", [BookController::class, 'destroy'])->name('bookDestroy');
 
-  Route::get("tournaments/players", [TournamentPlayerController::class, 'index'])->name('productIndex');
+  Route::get("tournaments/players", [TournamentPlayerController::class, 'index'])->name('tournamentPlayerIndex');
   Route::get("tournaments/players/create", [TournamentPlayerController::class, 'create'])->name('tournamentPlayerCreate');
   Route::post("tournaments/players/{id}/store", [TournamentPlayerController::class, 'store'])->name('tournamentPlayerStore');
   Route::get("tournaments/players/{id}/edit", [TournamentPlayerController::class, 'edit'])->name('tournamentPlayerEdit');
